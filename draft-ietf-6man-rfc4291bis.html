@@ -1,0 +1,3829 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>IP Version 6 Addressing Architecture</title>
+<meta content="Robert M. Hinden" name="author">
+<meta content="Stephen E. Deering" name="author">
+<meta content="
+       This specification defines the addressing architecture of the IP
+   Version 6 (IPv6) protocol.  The document includes the IPv6 addressing
+   model, text representations of IPv6 addresses, definition of IPv6
+   unicast addresses, anycast addresses, and multicast addresses, and an
+   IPv6 node's required addresses. 
+       This document obsoletes RFC 4291, &quot;IP Version 6 Addressing
+   Architecture&quot;. 
+    " name="description">
+<meta content="xml2rfc 3.35.0" name="generator">
+<meta content="draft-ietf-6man-rfc4291bis-09" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.35.0
+    Python 3.15.2
+    ConfigArgParse 1.10.2
+    google-i18n-address 3.1.1
+    intervaltree 3.2.1
+    Jinja2 3.1.6
+    lxml 6.1.3
+    natsort 8.4.0
+    platformdirs 4.14.8
+    pycountry 26.2.16
+    PyYAML 6.0.4
+    requests 2.34.2
+    wcwidth 0.9.5
+-->
+<link href="draft-ietf-6man-rfc4291bis.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">/*
+
+  NOTE: Changes at the bottom of this file overrides some earlier settings.
+
+  Once the style has stabilized and has been adopted as an official RFC style,
+  this can be consolidated so that style settings occur only in one place, but
+  for now the contents of this file consists first of the initial CSS work as
+  provided to the RFC Formatter (xml2rfc) work, followed by itemized and
+  commented changes found necessary during the development of the v3
+  formatters.
+
+*/
+
+/* fonts */
+@import url('https://static.ietf.org/fonts/noto-sans/import.css'); /* Sans-serif */
+@import url('https://static.ietf.org/fonts/noto-serif/import.css'); /* Serif (print) */
+@import url('https://static.ietf.org/fonts/roboto-mono/import.css'); /* Monospace */
+
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
+@viewport {
+  zoom: 1.0;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+/* general and mobile first */
+html {
+}
+body {
+  max-width: 90%;
+  margin: 1.5em auto;
+  color: #222;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  overflow-wrap: break-word;
+}
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+#title {
+  clear: both;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 0.5em 0;
+  padding: 1em 0 0.5em;
+}
+.author {
+  padding-bottom: 4px;
+}
+h1 {
+  font-size: 26px;
+  margin: 1em 0;
+}
+h2 {
+  font-size: 22px;
+  margin-top: -20px;  /* provide offset for in-page anchors */
+  padding-top: 33px;
+}
+h3 {
+  font-size: 18px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h4 {
+  font-size: 16px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h5, h6 {
+  font-size: 14px;
+}
+#n-copyright-notice {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+/* general structure */
+p {
+  padding: 0;
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+@media print {
+  svg {
+    max-height: 850px;
+    max-width: 660px;
+  }
+}
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  display: table;
+  border: none;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.ulBare, li.ulBare {
+  margin-left: 0em !important;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+/* 
+dl.nohang > dt {
+  float: none;
+}
+*/
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #22e; /* Arlen: WCAG 2019 */
+}
+a[href]:hover {
+  background-color: #f2f2f2;
+}
+figcaption a[href],
+a[href].selfRef {
+  color: #222;
+}
+/* XXX probably not this:
+a.selfRef:hover {
+  background-color: transparent;
+  cursor: default;
+} */
+
+/* Figures */
+tt, code, pre {
+  background-color: #f9f9f9;
+  font-family: var(--font-mono);
+}
+pre {
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 1em;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption {
+  font-style: italic;
+  margin: 0 0 1em 0;
+}
+@media screen {
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    max-width: calc(100% - 22px);
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 1.2em 2em;
+}
+blockquote {
+  background-color: #f9f9f9;
+  color: #111; /* Arlen: WCAG 2019 */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 1em 0;
+}
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+.xref {
+  overflow-wrap: normal;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #e9e9e9;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f5f5f5;
+}
+table caption {
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+sub,
+sup {
+ white-space: nowrap;
+}
+
+/* pilcrow */
+a.pilcrow {
+  color: #666; /* Arlen: AHDJ 2019 */
+  text-decoration: none;
+  visibility: hidden;
+  user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+@media screen {
+  aside:hover > a.pilcrow,
+  p:hover > a.pilcrow,
+  blockquote:hover > a.pilcrow,
+  div:hover > a.pilcrow,
+  li:hover > a.pilcrow,
+  pre:hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: 0.9em;
+}
+#identifiers dt {
+  width: 3em;
+  clear: left;
+}
+#identifiers dd {
+  float: left;
+  margin-bottom: 0;
+}
+/* Fix PDF info block run off issue */
+@media print {
+  #identifiers dd {
+    max-width: 100%;
+  }
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #666; /* Arlen: WCAG 2019 */
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc  {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+nav.toc ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+nav.toc li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.refSubseries {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+  }
+  .index ul ul {
+    -moz-column-count: 1;
+    -moz-column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  font-family: var(--font-sans);
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #9e2a00; /* Arlen: WCAG 2019 */
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  border-radius: 3px;
+}
+.cref {
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 1023px) {
+  body {
+    padding-top: 2em;
+  }
+  #title {
+    padding: 1em 0;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: -18px;  /* provide offset for in-page anchors */
+    padding-top: 38px;
+  }
+  #identifiers dd {
+    max-width: 60%;
+  }
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border-bottom: 1px solid #ccc;
+  }
+  #toc h2 {
+    margin: -1px 0 0 0;
+    padding: 4px 0 4px 6px;
+    padding-right: 1em;
+    min-width: 190px;
+    font-size: 1.1em;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 6px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 1024px) {
+  body {
+    max-width: 724px;
+    margin: 42px auto;
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+  #toc {
+    position: fixed;
+    top: 42px;
+    right: 42px;
+    width: 25%;
+    margin: 0;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #toc h2 {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 0;
+    overflow: auto;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  .breakable pre {
+    break-inside: auto;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* This is commented out here, as the string-set: doesn't
+   pass W3C validation currently */
+/*
+.ears thead .left {
+  string-set: ears-top-left content();
+}
+
+.ears thead .center {
+  string-set: ears-top-center content();
+}
+
+.ears thead .right {
+  string-set: ears-top-right content();
+}
+
+.ears tfoot .left {
+  string-set: ears-bottom-left content();
+}
+
+.ears tfoot .center {
+  string-set: ears-bottom-center content();
+}
+
+.ears tfoot .right {
+  string-set: ears-bottom-right content();
+}
+*/
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+  /* The following is commented out here, but set appropriately by in code, as
+     the content depends on the document */
+  /*
+  @top-left {
+    content: 'Internet-Draft';
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-left {
+    content: string(ears-top-left);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-center {
+    content: string(ears-top-center);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-right {
+    content: string(ears-top-right);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @bottom-left {
+    content: string(ears-bottom-left);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-center {
+    content: string(ears-bottom-center);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-right {
+      content: '[Page ' counter(page) ']';
+      vertical-align: top;
+      border-top: solid 1px #ccc;
+  }
+  */
+
+}
+
+/* Changes introduced to fix issues found during implementation */
+/* Make sure links are clickable even if overlapped by following H* */
+a {
+  z-index: 2;
+}
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Leave room in document info to show Internet-Draft on one line */
+#identifiers dt {
+  width: 8em;
+}
+
+/* Don't waste quite as much whitespace between label and value in doc info */
+#identifiers dd {
+  margin-left: 1em;
+}
+
+/* Give floating toc a background color (needed when it's a div inside section */
+#toc {
+  background-color: white;
+}
+
+/* Make the collapsed ToC header render white on gray also when it's a link */
+@media screen and (max-width: 1023px) {
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+}
+
+/* Give the bottom of the ToC some whitespace */
+@media screen and (min-width: 1024px) {
+  #toc {
+    padding: 0 0 1em 1em;
+  }
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* prevent monospace from becoming overly large */
+tt, code, pre {
+  font-size: 95%;
+}
+
+/* Fix the height/width aspect for ascii art*/
+.sourcecode pre,
+.art-text pre {
+  line-height: 1.12;
+}
+
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 30em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+caption a[href] {
+  color: #222;
+}
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+/* Tweak the invisible space above H* in order not to overlay links in text above */
+ h2 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 31px;
+ }
+ h3 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+ h4 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+/* Float artwork pilcrow to the right */
+@media screen {
+  .artwork a.pilcrow {
+    display: block;
+    line-height: 0.7;
+    margin-top: 0.15em;
+  }
+}
+/* Make pilcrows on dd visible */
+@media screen {
+  dd:hover > a.pilcrow {
+    visibility: visible;
+  }
+}
+/* Make the placement of figcaption match that of a table's caption
+   by removing the figure's added bottom margin */
+.alignLeft.art-text,
+.alignCenter.art-text,
+.alignRight.art-text {
+   margin-bottom: 0;
+}
+.alignLeft,
+.alignCenter,
+.alignRight {
+  margin: 1em 0 0 0;
+}
+/* In print, the pilcrow won't show on hover, so prevent it from taking up space,
+   possibly even requiring a new line */
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+/* Styling for the external metadata */
+div#external-metadata {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+div#internal-metadata {
+  padding: 0.5em;                       /* to match the external-metadata padding */
+}
+/* Styling for title RFC Number */
+h1#rfcnum {
+  clear: both;
+  margin: 0 0 -1em;
+  padding: 1em 0 0 0;
+}
+/* Make .olPercent look the same as <ol><li> */
+dl.olPercent > dd {
+  margin-bottom: 0.25em;
+  min-height: initial;
+}
+/* Give aside some styling to set it apart */
+aside {
+  border-left: 1px solid #ddd;
+  margin: 1em 0 1em 2em;
+  padding: 0.2em 2em;
+}
+aside > dl,
+aside > ol,
+aside > ul,
+aside > table,
+aside > p {
+  margin-bottom: 0.5em;
+}
+/* Additional page break settings */
+@media print {
+  figcaption, table caption {
+    page-break-before: avoid;
+  }
+  table {
+    page-break-inside: avoid;
+  }
+}
+/* Font size adjustments for print */
+@media print {
+  body  { font-size: 10pt;      line-height: normal; max-width: 96%; }
+  h1    { font-size: 1.72em;    padding-top: 1.5em; } /* 1*1.2*1.2*1.2 */
+  h2    { font-size: 1.44em;    padding-top: 1.5em; } /* 1*1.2*1.2 */
+  h3    { font-size: 1.2em;     padding-top: 1.5em; } /* 1*1.2 */
+  h4    { font-size: 1em;       padding-top: 1.5em; }
+  h5, h6 { font-size: 1em;      margin: initial; padding: 0.5em 0 0.3em; }
+}
+/* Sourcecode margin in print, when there's no pilcrow */
+@media print {
+  .artwork,
+  .artwork > pre,
+  .sourcecode {
+    margin-bottom: 1em;
+  }
+}
+/* Avoid narrow tables forcing too narrow table captions, which may render badly */
+table {
+  min-width: 20em;
+}
+/* ol type a */
+ol.type-a { list-style-type: lower-alpha; }
+ol.type-A { list-style-type: upper-alpha; }
+ol.type-i { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
+/* Apply the print table and row borders in general, on request from the RPC,
+and increase the contrast between border and odd row background slightly */
+table {
+  border: 1px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+}
+tr {
+  break-inside: avoid;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f8f8f8;
+}
+/* Use style rules to govern display of the TOC. */
+@media screen and (max-width: 1023px) {
+  #toc nav { display: none; }
+  #toc.active nav { display: block; }
+}
+/* Add support for keepWithNext */
+.keepWithNext {
+  break-after: avoid-page;
+  break-after: avoid-page;
+}
+/* Add support for keepWithPrevious */
+.keepWithPrevious {
+  break-before: avoid-page;
+}
+/* Change the approach to avoiding breaks inside artwork etc. */
+figure, pre, table, .artwork, .sourcecode  {
+  break-before: auto;
+  break-after: auto;
+}
+/* Avoid breaks between <dt> and <dd> */
+dl {
+  break-before: auto;
+  break-inside: auto;
+}
+dt {
+  break-before: auto;
+  break-after: avoid-page;
+}
+dd {
+  break-before: avoid-page;
+  break-after: auto;
+  orphans: 3;
+  widows: 3
+}
+span.break, dd.break {
+  margin-bottom: 0;
+  min-height: 0;
+  break-before: auto;
+  break-inside: auto;
+  break-after: auto;
+}
+/* Undo break-before ToC */
+@media print {
+  #toc {
+    break-before: auto;
+  }
+}
+/* Text in compact lists should not get extra bottom margin space,
+   since that would makes the list not compact */
+ul.compact p, .ulCompact p,
+ol.compact p, .olCompact p {
+ margin: 0;
+}
+/* But the list as a whole needs the extra space at the end */
+section ul.compact,
+section .ulCompact,
+section ol.compact,
+section .olCompact {
+  margin-bottom: 1em;                    /* same as p not within ul.compact etc. */
+}
+/* The tt and code background above interferes with for instance table cell
+   backgrounds.  Changed to something a bit more selective. */
+tt, code {
+  background-color: transparent;
+}
+p tt, p code, li tt, li code, dt tt, dt code {
+  background-color: #f8f8f8;
+}
+/* Tweak the pre margin -- 0px doesn't come out well */
+pre {
+   margin-top: 0.5px;
+}
+/* Tweak the compact list text */
+ul.compact, .ulCompact,
+ol.compact, .olCompact,
+dl.compact, .dlCompact {
+  line-height: normal;
+}
+/* Don't add top margin for nested lists */
+li > ul, li > ol, li > dl,
+dd > ul, dd > ol, dd > dl,
+dl > dd > dl {
+  margin-top: initial;
+}
+/* Elements that should not be rendered on the same line as a <dt> */
+/* This should match the element list in writer.text.TextWriter.render_dl() */
+dd > div.artwork:first-child,
+dd > aside:first-child,
+dd > blockquote:first-child,
+dd > figure:first-child,
+dd > ol:first-child,
+dd > div.sourcecode:first-child,
+dd > table:first-child,
+dd > ul:first-child {
+  clear: left;
+}
+/* fix for weird browser behaviour when <dd/> is empty */
+dt+dd:empty::before{
+  content: "\00a0";
+}
+/* Make paragraph spacing inside <li> smaller than in body text, to fit better within the list */
+li > p {
+  margin-bottom: 0.5em
+}
+/* Don't let p margin spill out from inside list items */
+li > p:last-of-type:only-child {
+  margin-bottom: 0;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">IPv6 Addressing Architecture</td>
+<td class="right">November 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Hinden &amp; Deering</td>
+<td class="center">Expires 26 May 2027</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-6man-rfc4291bis-09</dd>
+<dt class="label-obsoletes">Obsoletes:</dt>
+<dd class="obsoletes">
+<a href="https://www.rfc-editor.org/rfc/rfc4291" class="eref">4291</a> (if approved)</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-11-22" class="published">22 November 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2027-05-26">26 May 2027</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">R. Hinden</div>
+<div class="org">Check Point Software</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Deering</div>
+<div class="org">Retired</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">IP Version 6 Addressing Architecture</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This specification defines the addressing architecture of the IP
+   Version 6 (IPv6) protocol.  The document includes the IPv6 addressing
+   model, text representations of IPv6 addresses, definition of IPv6
+   unicast addresses, anycast addresses, and multicast addresses, and an
+   IPv6 node's required addresses.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">This document obsoletes RFC 4291, "IP Version 6 Addressing
+   Architecture".<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 26 May 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-3">
+            This document may contain material from IETF Documents or IETF
+            Contributions published or made publicly available before November
+            10, 2008. The person(s) controlling the copyright in some of this
+            material may not have granted the IETF Trust the right to allow
+            modifications of such material outside the IETF Standards Process.
+            Without obtaining an adequate license from the person(s)
+            controlling the copyright in such materials, this document may not
+            be modified outside the IETF Standards Process, and derivative
+            works of it may not be created outside the IETF Standards Process,
+            except to format it for publication as an RFC or to translate it
+            into languages other than English.<a href="#section-boilerplate.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-ipv6-addressing" class="internal xref">IPv6 Addressing</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-addressing-model" class="internal xref">Addressing Model</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-text-representation-of-ipv6" class="internal xref">Text Representation of IPv6 Addresses</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1" class="keepWithNext"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-text-representation-of-addr" class="internal xref">Text Representation of Addresses</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-text-representation-of-addre" class="internal xref">Text Representation of Address Prefixes</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.3">
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-recommendation-for-outputti" class="internal xref">Recommendation for outputting IPv6 addresses</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-address-type-identification" class="internal xref">Address Type Identification</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-unicast-addresses" class="internal xref">Unicast Addresses</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.1">
+                    <p id="section-toc.1-1.2.2.4.2.1.1"><a href="#section-2.4.1" class="auto internal xref">2.4.1</a>.  <a href="#name-interface-identifiers" class="internal xref">Interface Identifiers</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.2">
+                    <p id="section-toc.1-1.2.2.4.2.2.1"><a href="#section-2.4.2" class="auto internal xref">2.4.2</a>.  <a href="#name-the-unspecified-address" class="internal xref">The Unspecified Address</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.3">
+                    <p id="section-toc.1-1.2.2.4.2.3.1"><a href="#section-2.4.3" class="auto internal xref">2.4.3</a>.  <a href="#name-the-loopback-address" class="internal xref">The Loopback Address</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.4">
+                    <p id="section-toc.1-1.2.2.4.2.4.1"><a href="#section-2.4.4" class="auto internal xref">2.4.4</a>.  <a href="#name-global-unicast-addresses" class="internal xref">Global Unicast Addresses</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.5">
+                    <p id="section-toc.1-1.2.2.4.2.5.1"><a href="#section-2.4.5" class="auto internal xref">2.4.5</a>.  <a href="#name-ipv6-addresses-with-embedde" class="internal xref">IPv6 Addresses with Embedded IPv4 Addresses</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.5.2.1">
+                        <p id="section-toc.1-1.2.2.4.2.5.2.1.1"><a href="#section-2.4.5.1" class="auto internal xref">2.4.5.1</a>.  <a href="#name-ipv4-compatible-ipv6-addres" class="internal xref">IPv4-Compatible IPv6 Address</a></p>
+</li>
+                      <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.5.2.2">
+                        <p id="section-toc.1-1.2.2.4.2.5.2.2.1"><a href="#section-2.4.5.2" class="auto internal xref">2.4.5.2</a>.  <a href="#name-ipv4-mapped-ipv6-address" class="internal xref">IPv4-Mapped IPv6 Address</a></p>
+</li>
+                    </ul>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.6">
+                    <p id="section-toc.1-1.2.2.4.2.6.1"><a href="#section-2.4.6" class="auto internal xref">2.4.6</a>.  <a href="#name-link-local-ipv6-unicast-add" class="internal xref">Link-Local IPv6 Unicast Addresses</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.7">
+                    <p id="section-toc.1-1.2.2.4.2.7.1"><a href="#section-2.4.7" class="auto internal xref">2.4.7</a>.  <a href="#name-other-local-unicast-ipv6-ad" class="internal xref">Other Local Unicast IPv6 Addresses</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-anycast-addresses" class="internal xref">Anycast Addresses</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
+                    <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="auto internal xref">2.5.1</a>.  <a href="#name-required-anycast-address" class="internal xref">Required Anycast Address</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6">
+                <p id="section-toc.1-1.2.2.6.1"><a href="#section-2.6" class="auto internal xref">2.6</a>.  <a href="#name-multicast-addresses" class="internal xref">Multicast Addresses</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6.2.1">
+                    <p id="section-toc.1-1.2.2.6.2.1.1"><a href="#section-2.6.1" class="auto internal xref">2.6.1</a>.  <a href="#name-pre-defined-multicast-addre" class="internal xref">Pre-Defined Multicast Addresses</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.7">
+                <p id="section-toc.1-1.2.2.7.1"><a href="#section-2.7" class="auto internal xref">2.7</a>.  <a href="#name-a-nodes-required-addresses" class="internal xref">A Node's Required Addresses</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-modified-eui-64-format-inte" class="internal xref">Modified EUI-64 Format Interface Identifiers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-creating-modified-eui-64-fo" class="internal xref">Creating Modified EUI-64 Format Interface Identifiers</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-changes-since-rfc-4291" class="internal xref">CHANGES SINCE RFC 4291</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-change-history-since-rfc429" class="internal xref">Change History Since RFC4291</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="Intro">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">This specification defines the addressing architecture of the IP
+   Version 6 protocol.  It includes the basic formats for the various
+   types of IPv6 addresses (unicast, anycast, and multicast).<a href="#section-1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Addr">
+<section id="section-2">
+      <h2 id="name-ipv6-addressing">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-ipv6-addressing" class="section-name selfRef">IPv6 Addressing</a>
+      </h2>
+<p id="section-2-1">IPv6 addresses are 128-bit identifiers for interfaces and sets of
+   interfaces (where "interface" is as defined in Section 2 of
+   <span>[<a href="#I-D.ietf-6man-rfc2460bis" class="cite xref">I-D.ietf-6man-rfc2460bis</a>]</span>).
+   There are three types of addresses:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2-2.1">
+          <span class="break"></span><dl class="dlParallel" id="section-2-2.1.1">
+            <dt id="section-2-2.1.1.1">Unicast:</dt>
+            <dd style="margin-left: 6.5em" id="section-2-2.1.1.2">An identifier for a single interface.  A
+    packet sent to a unicast address is delivered to the interface
+    identified by that address.<a href="#section-2-2.1.1.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2-2.1.1.3">Anycast:</dt>
+            <dd style="margin-left: 6.5em" id="section-2-2.1.1.4">An identifier for a set of interfaces
+    (typically belonging to different nodes).  A packet sent to an
+    anycast address is delivered to one of the interfaces identified by
+    that address (the "nearest" one, according to the routing protocols'
+    measure of distance).<a href="#section-2-2.1.1.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2-2.1.1.5">Multicast:</dt>
+            <dd style="margin-left: 6.5em" id="section-2-2.1.1.6"> An identifier for a set of interfaces
+    (typically belonging to different nodes).  A packet sent to a
+    multicast address is delivered to all interfaces identified by that
+    address.<a href="#section-2-2.1.1.6" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</li>
+      </ul>
+<p id="section-2-3">There are no broadcast addresses in IPv6, their function being
+   superseded by multicast addresses.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">In this document, fields in addresses are given a specific name, for
+   example, "subnet".  When this name is used with the term "ID" for
+   identifier after the name (e.g., "subnet ID"), it refers to the
+   contents of the named field.  When it is used with the term "prefix"
+   (e.g., "subnet prefix"), it refers to all of the address from the
+   left up to and including this field.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2-5.1">
+          <p id="section-2-5.1.1">Note: The term "prefix" is used in several different contexts
+   for IPv6: a prefix used by a routing protocol, a prefix used by a node
+   to determine if another node is connected to the same link, and a
+   prefix used to construct the complete address of a node.<a href="#section-2-5.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-2-6">In IPv6, all zeros and all ones are legal values for any field,
+   unless specifically excluded.  Specifically, prefixes may contain, or
+   end with, zero-valued fields.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<div id="Model">
+<section id="section-2.1">
+        <h3 id="name-addressing-model">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-addressing-model" class="section-name selfRef">Addressing Model</a>
+        </h3>
+<p id="section-2.1-1">IPv6 addresses of all types are assigned to interfaces, not nodes.
+   An IPv6 unicast address refers to a single interface.  Since each
+   interface belongs to a single node, any of that node's interfaces'
+   unicast addresses may be used as an identifier for the node.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">All interfaces are required to have at least one Link-Local unicast
+   address (see <a href="#Node_Required" class="auto internal xref">Section 2.7</a> for additional required
+   addresses).  A single interface may also have multiple IPv6 addresses
+   of any type (unicast, anycast, and multicast) or scope.  Unicast
+   addresses with a scope greater than link-scope are not needed for
+   interfaces that are not used as the origin or destination of any IPv6
+   packets to or from non-neighbors.  This is sometimes convenient for
+   point-to-point interfaces.  There is one exception to this addressing
+   model:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.1-3.1">
+            <p id="section-2.1-3.1.1">A unicast address or a set of unicast addresses may be assigned to
+      multiple physical interfaces if the implementation treats the
+      multiple physical interfaces as one interface when presenting it
+      to the internet layer.  This is useful for load-sharing over
+      multiple physical interfaces.<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.1-4">Currently, IPv6 continues the IPv4 model in that a subnet prefix is
+   associated with one link.  Multiple subnet prefixes may be assigned to
+   the same link.
+
+   The relationship between links and IPv6 subnet prefixes differs from
+   the IPv4 model in that all nodes automatically configure an address
+   from the link-local prefix.
+
+   A host is by definition on-link with it's default router, and that
+   unicast addresses are not automatically associated with an on-link
+   prefix.  See <span>[<a href="#RFC5942" class="cite xref">RFC5942</a>]</span> "The IPv6 Subnet Model: The
+   Relationship between Links and Subnet Prefixes" for more details.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Rep">
+<section id="section-2.2">
+        <h3 id="name-text-representation-of-ipv6">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-text-representation-of-ipv6" class="section-name selfRef">Text Representation of IPv6 Addresses</a>
+        </h3>
+<div id="Text">
+<section id="section-2.2.1">
+          <h4 id="name-text-representation-of-addr">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-text-representation-of-addr" class="section-name selfRef">Text Representation of Addresses</a>
+          </h4>
+<p id="section-2.2.1-1">There are three conventional forms for representing IPv6 addresses as
+   text strings:<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.2.1-2">
+            <dt id="section-2.2.1-2.1">1.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.2">The preferred form is x:x:x:x:x:x:x:x, where the 'x's are one to
+      four hexadecimal digits of the eight 16-bit pieces of the address.
+      Examples:<a href="#section-2.2.1-2.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.3"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.4">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.1-2.4.1">
+                <dt id="section-2.2.1-2.4.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.4.1.2">abcd:ef01:2345:6789:abcd:ef01:2345:6789<a href="#section-2.2.1-2.4.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.2.1-2.4.1.3"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.4.1.4">2001:db8:0:0:8:800:200c:417a<a href="#section-2.2.1-2.4.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.5"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.6">Note that it is not necessary to write the leading zeros in an
+      individual field, but there must be at least one numeral in every
+      field (except for the case described in 2.).<a href="#section-2.2.1-2.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.7">2.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.8">Due to some methods of allocating certain styles of IPv6
+      addresses, it will be common for addresses to contain long strings
+      of zero bits.  In order to make writing addresses containing zero
+      bits easier, a special syntax is available to compress the zeros.
+      The use of "::" indicates one or more groups of 16 bits of zeros.
+      The "::" can only appear once in an address.  The "::" can also be
+      used to compress leading or trailing zeros in an address.<a href="#section-2.2.1-2.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.9"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.10">For example, the following addresses<a href="#section-2.2.1-2.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.11"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.12">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.1-2.12.1">
+                <dt id="section-2.2.1-2.12.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.12.1.2">
+                  <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.1-2.12.1.2.1">
+                    <dt id="section-2.2.1-2.12.1.2.1.1">2001:db8:0:0:8:800:200c:417a</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.12.1.2.1.2">a unicast address<a href="#section-2.2.1-2.12.1.2.1.2" class="pilcrow">¶</a>
+</dd>
+                    <dd class="break"></dd>
+<dt id="section-2.2.1-2.12.1.2.1.3">ff01:0:0:0:0:0:0:101</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.12.1.2.1.4">a multicast address<a href="#section-2.2.1-2.12.1.2.1.4" class="pilcrow">¶</a>
+</dd>
+                    <dd class="break"></dd>
+<dt id="section-2.2.1-2.12.1.2.1.5">0:0:0:0:0:0:0:1</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.12.1.2.1.6">the loopback address<a href="#section-2.2.1-2.12.1.2.1.6" class="pilcrow">¶</a>
+</dd>
+                    <dd class="break"></dd>
+<dt id="section-2.2.1-2.12.1.2.1.7">0:0:0:0:0:0:0:0</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.12.1.2.1.8">the unspecified address<a href="#section-2.2.1-2.12.1.2.1.8" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+</dl>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.13"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.14">may be represented as<a href="#section-2.2.1-2.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.15"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.16">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.1-2.16.1">
+                <dt id="section-2.2.1-2.16.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.16.1.2">
+                  <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.1-2.16.1.2.1">
+                    <dt id="section-2.2.1-2.16.1.2.1.1">2001:db8::8:800:200c:417a</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.16.1.2.1.2">a unicast address<a href="#section-2.2.1-2.16.1.2.1.2" class="pilcrow">¶</a>
+</dd>
+                    <dd class="break"></dd>
+<dt id="section-2.2.1-2.16.1.2.1.3">ff01::101</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.16.1.2.1.4">a multicast address<a href="#section-2.2.1-2.16.1.2.1.4" class="pilcrow">¶</a>
+</dd>
+                    <dd class="break"></dd>
+<dt id="section-2.2.1-2.16.1.2.1.5">::1</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.16.1.2.1.6">the loopback address<a href="#section-2.2.1-2.16.1.2.1.6" class="pilcrow">¶</a>
+</dd>
+                    <dd class="break"></dd>
+<dt id="section-2.2.1-2.16.1.2.1.7">::</dt>
+                    <dd style="margin-left: 15.0em" id="section-2.2.1-2.16.1.2.1.8">the unspecified address<a href="#section-2.2.1-2.16.1.2.1.8" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+</dl>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.17">3.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.18">An alternative form that is sometimes more convenient when dealing
+      with a mixed environment of IPv4 and IPv6 nodes is
+      x:x:x:x:x:x:d.d.d.d, where the 'x's are the hexadecimal values of
+      the six high-order 16-bit pieces of the address, and the 'd's are
+      the decimal values of the four low-order 8-bit pieces of the
+      address (standard IPv4 representation).  Examples:<a href="#section-2.2.1-2.18" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.19"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.20">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.1-2.20.1">
+                <dt id="section-2.2.1-2.20.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.20.1.2">0:0:0:0:0:0:13.1.68.3<a href="#section-2.2.1-2.20.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.2.1-2.20.1.3"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.20.1.4">0:0:0:0:0:ffff:129.144.52.38<a href="#section-2.2.1-2.20.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.21"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.22">or in compressed form:<a href="#section-2.2.1-2.22" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.1-2.23"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.1-2.24">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.1-2.24.1">
+                <dt id="section-2.2.1-2.24.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.24.1.2"> ::13.1.68.3<a href="#section-2.2.1-2.24.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.2.1-2.24.1.3"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.1-2.24.1.4">::ffff:129.144.52.38<a href="#section-2.2.1-2.24.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="Addr_Prefix">
+<section id="section-2.2.2">
+          <h4 id="name-text-representation-of-addre">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-text-representation-of-addre" class="section-name selfRef">Text Representation of Address Prefixes</a>
+          </h4>
+<p id="section-2.2.2-1">The text representation of IPv6 address prefixes is similar to the
+   way IPv4 address prefixes are written in Classless Inter-Domain
+   Routing (CIDR) notation
+   <span>[<a href="#RFC4632" class="cite xref">RFC4632</a>]</span>.
+   An IPv6 address prefix is
+   represented by the notation:<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.2.2-2.1">
+              <p id="section-2.2.2-2.1.1">ipv6-address/prefix-length<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.2-3">where<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.2.2-4">
+            <dt id="section-2.2.2-4.1">ipv6-address</dt>
+            <dd style="margin-left: 7.0em" id="section-2.2.2-4.2">is an IPv6 address in any of the notations listed
+     in <a href="#Rep" class="auto internal xref">Section 2.2</a>.<a href="#section-2.2.2-4.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.2-4.3">prefix-length</dt>
+            <dd style="margin-left: 7.0em" id="section-2.2.2-4.4">is a decimal value specifying how many of the
+     leftmost contiguous bits of the address comprise the prefix.<a href="#section-2.2.2-4.4" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-2.2.2-5">For example, the following are legal representations of the 60-bit
+   prefix 20010db80000cd3 (hexadecimal):<a href="#section-2.2.2-5" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.2.2-6.1">
+              <p id="section-2.2.2-6.1.1">2001:0db8:0000:cd30:0000:0000:0000:0000/60<a href="#section-2.2.2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal ulEmpty" id="section-2.2.2-6.2">
+              <p id="section-2.2.2-6.2.1">2001:0db8::cd30:0:0:0:0/60<a href="#section-2.2.2-6.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal ulEmpty" id="section-2.2.2-6.3">
+              <p id="section-2.2.2-6.3.1">2001:0db8:0:cd30::/60<a href="#section-2.2.2-6.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.2-7">The following are NOT legal representations of the above prefix:<a href="#section-2.2.2-7" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.2.2-8.1">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.2-8.1.1">
+                <dt id="section-2.2.2-8.1.1.1">2001:0db8:0:cd3/60</dt>
+                <dd style="margin-left: 10.5em" id="section-2.2.2-8.1.1.2">may drop leading zeros, but not trailing
+     zeros, within any 16-bit chunk of the address<a href="#section-2.2.2-8.1.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.2.2-8.1.1.3">2001:0db8::cd30/60</dt>
+                <dd style="margin-left: 10.5em" id="section-2.2.2-8.1.1.4">address to left of "/" expands to
+      2001:0db8:0000:0000:0000:0000:0000:cd30<a href="#section-2.2.2-8.1.1.4" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.2.2-8.1.1.5">2001:0db8::cd3/60</dt>
+                <dd style="margin-left: 10.5em" id="section-2.2.2-8.1.1.6">address to left of "/" expands to
+      2001:0db8:0000:0000:0000:0000:0000:0cd3<a href="#section-2.2.2-8.1.1.6" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+<p id="section-2.2.2-9">When writing both a node address and a prefix of that node address
+   (e.g., the node's subnet prefix), the two can be combined as follows:<a href="#section-2.2.2-9" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.2.2-10.1">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.2.2-10.1.1">
+                <dt id="section-2.2.2-10.1.1.1">the node address</dt>
+                <dd style="margin-left: 12.0em" id="section-2.2.2-10.1.1.2">2001:0db8:0:cd30:123:4567:89ab:cdef<a href="#section-2.2.2-10.1.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.2.2-10.1.1.3">and its subnet prefix</dt>
+                <dd style="margin-left: 12.0em" id="section-2.2.2-10.1.1.4"> 2001:0db8:0:cd30::/60<a href="#section-2.2.2-10.1.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+            <li class="normal ulEmpty" id="section-2.2.2-10.2">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.2-10.2.1">
+                <dt id="section-2.2.2-10.2.1.1">can be abbreviated as</dt>
+                <dd style="margin-left: 12.0em" id="section-2.2.2-10.2.1.2">2001:0db8:0:cd30:123:4567:89ab:cdef/60<a href="#section-2.2.2-10.2.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+</section>
+</div>
+<div id="Output">
+<section id="section-2.2.3">
+          <h4 id="name-recommendation-for-outputti">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-recommendation-for-outputti" class="section-name selfRef">Recommendation for outputting IPv6 addresses</a>
+          </h4>
+<p id="section-2.2.3-1">This section provides a recommendation for systems generating and
+   outputting IPv6 addresses as text.  Note, all implementations must
+   accept and process all addresses in the formats defined in the
+   previous two sections of this document.  Background on this
+   recommendation can be found in <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-2">The recommendations are as follows:<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.2.3-3">
+            <dt id="section-2.2.3-3.1">1.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.2">The hexadecimal digits "a", "b", "c", "d", "e", and "f" in an IPv6 address
+   must be represented in lowercase.<a href="#section-2.2.3-3.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.3">2.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.4">Leading zeros in a 16-Bit Field must be suppressed.  For example,<a href="#section-2.2.3-3.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.5"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.6">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.6.1">
+                <dt id="section-2.2.3-3.6.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.6.1.2">2001:0db8::0001<a href="#section-2.2.3-3.6.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.7"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.8">is not correct and must be represented as<a href="#section-2.2.3-3.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.9"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.10">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.10.1">
+                <dt id="section-2.2.3-3.10.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.10.1.2">2001:db8::1<a href="#section-2.2.3-3.10.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.11">3.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.12">A single 16-bit 0000 field must be represented as 0.<a href="#section-2.2.3-3.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.13"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.14">The use of the symbol "::" must be used to its maximum capability.
+  For example:<a href="#section-2.2.3-3.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.15"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.16">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.16.1">
+                <dt id="section-2.2.3-3.16.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.16.1.2">2001:db8:0:0:0:0:2:1<a href="#section-2.2.3-3.16.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.17"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.18">must be shortened to<a href="#section-2.2.3-3.18" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.19"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.20">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.20.1">
+                <dt id="section-2.2.3-3.20.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.20.1.2">2001:db8::2:1<a href="#section-2.2.3-3.20.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.21"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.22">Likewise,<a href="#section-2.2.3-3.22" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.23"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.24">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.24.1">
+                <dt id="section-2.2.3-3.24.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.24.1.2">2001:db8::0:1<a href="#section-2.2.3-3.24.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.25"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.26">is not correct, because the symbol "::" could
+  have been used to produce a shorter representation<a href="#section-2.2.3-3.26" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.27"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.28">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.28.1">
+                <dt id="section-2.2.3-3.28.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.28.1.2">2001:db8::1.<a href="#section-2.2.3-3.28.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.29">4.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.30">When there is an alternative choice in the placement of a "::", the
+  longest run of consecutive 16-bit 0 fields must be shortened, that is,
+  in<a href="#section-2.2.3-3.30" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.31"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.32">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.32.1">
+                <dt id="section-2.2.3-3.32.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.32.1.2">2001:0:0:1:0:0:0:1<a href="#section-2.2.3-3.32.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.33"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.34">the sequence with three consecutive zero fields is shortened to<a href="#section-2.2.3-3.34" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.35"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.36">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.36.1">
+                <dt id="section-2.2.3-3.36.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.36.1.2">2001:0:0:1::1<a href="#section-2.2.3-3.36.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.37">5.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.38">When the length of the consecutive 16-bit 0 fields are
+  equal, for example<a href="#section-2.2.3-3.38" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.39"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.40">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.40.1">
+                <dt id="section-2.2.3-3.40.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.40.1.2">2001:db8:0:0:1:0:0:1<a href="#section-2.2.3-3.40.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.41"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.42">the first sequence of zero bits
+  must be shortened.  For example<a href="#section-2.2.3-3.42" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.43"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.44">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.44.1">
+                <dt id="section-2.2.3-3.44.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.44.1.2">2001:db8::1:0:0:1<a href="#section-2.2.3-3.44.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.45"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.46">is the correct representation.<a href="#section-2.2.3-3.46" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.47">6.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.48">The symbol "::" must not be used to shorten just one
+  16-bit 0 field.  For example, the representation<a href="#section-2.2.3-3.48" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.49"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.50">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.50.1">
+                <dt id="section-2.2.3-3.50.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.50.1.2">2001:db8:0:1:1:1:1:1<a href="#section-2.2.3-3.50.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.51"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.52">is correct, but<a href="#section-2.2.3-3.52" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.53"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.54">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.54.1">
+                <dt id="section-2.2.3-3.54.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.54.1.2">2001:db8::1:1:1:1:1<a href="#section-2.2.3-3.54.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.55"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.56">is not correct.<a href="#section-2.2.3-3.56" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.57">7.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.58">The text representation method describe in this section should also be
+  use for text Representation of IPv6 Address Prefixes.  For example<a href="#section-2.2.3-3.58" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.59"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.60">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.60.1">
+                <dt id="section-2.2.3-3.60.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.60.1.2">2001:0db8:0000:cd30:0000:0000:0000:0000/60<a href="#section-2.2.3-3.60.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.61"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.62">should be shown as<a href="#section-2.2.3-3.62" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.63"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.64">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.64.1">
+                <dt id="section-2.2.3-3.64.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.64.1.2">2001:0db8:0:cd30::/60<a href="#section-2.2.3-3.64.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.65">8.</dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.66">The text representation method describe in this section should be applied
+   for IPv6 addresses with embedded IPv4 address.  For example<a href="#section-2.2.3-3.66" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.67"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.68">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.68.1">
+                <dt id="section-2.2.3-3.68.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.68.1.2">0:0:0:0:0:ffff:192.0.2.1<a href="#section-2.2.3-3.68.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.69"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.70">should be shown as<a href="#section-2.2.3-3.70" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-2.2.3-3.71"></dt>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.72">
+              <span class="break"></span><dl class="dlParallel" id="section-2.2.3-3.72.1">
+                <dt id="section-2.2.3-3.72.1.1"></dt>
+                <dd style="margin-left: 1.5em" id="section-2.2.3-3.72.1.2">::ffff:192.0.2.1<a href="#section-2.2.3-3.72.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="Addr_Type">
+<section id="section-2.3">
+        <h3 id="name-address-type-identification">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-address-type-identification" class="section-name selfRef">Address Type Identification</a>
+        </h3>
+<p id="section-2.3-1">The type of an IPv6 address is identified by the high-order bits of
+   the address, as follows:<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.3-2">
+<pre>
+   Address type         Binary prefix        IPv6 notation   Section
+   ------------         -------------        -------------   -------
+   Unspecified          00...0  (128 bits)   ::/128          2.4.2
+   Loopback             00...1  (128 bits)   ::1/128         2.4.3
+   Multicast            11111111             ff00::/8        2.6
+   Link-Local unicast   1111111010           fe80::/10       2.4.6
+   Global Unicast       (everything else)
+</pre><a href="#section-2.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3-3">Anycast addresses are taken from the unicast address spaces (of any
+   scope) and are not syntactically distinguishable from unicast
+   addresses.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-4">The general format of Global Unicast addresses is described in
+   <a href="#Global" class="auto internal xref">Section 2.4.4</a>.  Some special-purpose subtypes of Global
+   Unicast addresses that contain embedded IPv4 addresses (for the
+   purposes of IPv4-IPv6 interoperation) are described in <a href="#Embedded" class="auto internal xref">Section 2.4.5</a>.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+<p id="section-2.3-5">Future specifications may redefine one or more sub-ranges of the
+   Global Unicast space for other purposes, but unless and until that
+   happens, implementations must treat all addresses that do not start
+   with any of the above-listed prefixes as Global Unicast addresses.<a href="#section-2.3-5" class="pilcrow">¶</a></p>
+<p id="section-2.3-6">The current assigned IPv6 prefixes and references to their usage
+   can be found in the IANA Internet Protocol Version 6 Address Space
+   registry <span>[<a href="#IANA-AD" class="cite xref">IANA-AD</a>]</span> and the IANA IPv6 Special-Purpose
+   Address Registry <span>[<a href="#IANA-SP" class="cite xref">IANA-SP</a>]</span>.<a href="#section-2.3-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Unicast">
+<section id="section-2.4">
+        <h3 id="name-unicast-addresses">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-unicast-addresses" class="section-name selfRef">Unicast Addresses</a>
+        </h3>
+<p id="section-2.4-1">IPv6 unicast addresses are aggregatable with prefixes of arbitrary
+   bit-length, similar to IPv4 addresses under Classless Inter-Domain
+   Routing.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">IPv6 unicast routing is based on prefixes of any valid length up to
+   128 <span>[<a href="#BCP198" class="cite xref">BCP198</a>]</span>.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.4-3">There are several types of unicast addresses in IPv6, in
+   particular, Global Unicast, Local unicast, and Link-Local unicast.
+   There are also some special-purpose subtypes of Global Unicast, such
+   as IPv6 addresses with embedded IPv4 addresses.  Additional address
+   types or subtypes can be defined in the future.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4-4">IPv6 nodes may have considerable or little knowledge of the internal
+   structure of the IPv6 address, depending on the role the node plays
+   (for instance, host versus router).  At a minimum, a node may
+   consider that unicast addresses (including its own) have no internal
+   structure:<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4-5">
+<pre>
+|                           128 bits                              |
++-----------------------------------------------------------------+
+|                          node address                           |
++-----------------------------------------------------------------+
+</pre><a href="#section-2.4-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4-6">A slightly more complex node may additionally be aware of subnet
+   prefix(es) for the link(s) it is attached to, where different
+   addresses may have different values for n:<a href="#section-2.4-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4-7">
+<pre>
+|          n bits               |           128-n bits            |
++-------------------------------+---------------------------------+
+|       subnet prefix           |           interface ID          |
++-------------------------------+---------------------------------+
+</pre><a href="#section-2.4-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4-8">Though a very simple router may have no knowledge of the internal
+   structure of IPv6 unicast addresses, routers will more generally have
+   knowledge of one or more of the hierarchical boundaries for the
+   operation of routing protocols.  The known boundaries will differ
+   from router to router, depending on what positions the router holds
+   in the routing hierarchy.<a href="#section-2.4-8" class="pilcrow">¶</a></p>
+<p id="section-2.4-9">Except for the knowledge of the subnet boundary discussed in the
+   previous paragraphs, nodes should not make any assumptions about the
+   structure of an IPv6 address.<a href="#section-2.4-9" class="pilcrow">¶</a></p>
+<div id="II">
+<section id="section-2.4.1">
+          <h4 id="name-interface-identifiers">
+<a href="#section-2.4.1" class="section-number selfRef">2.4.1. </a><a href="#name-interface-identifiers" class="section-name selfRef">Interface Identifiers</a>
+          </h4>
+<p id="section-2.4.1-1">Interface identifiers in IPv6 unicast addresses are used to
+   identify interfaces on a link.  They are required to be unique within
+   a subnet prefix.  It is recommended that the same interface identifier
+   not be assigned to different nodes on a link.  They may also be unique
+   over a broader scope.  The same interface identifier may be used on
+   multiple interfaces on a single node, as long as they are attached to
+   different subnets.<a href="#section-2.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-2">Interface IDs must be viewed outside of the node that created
+   Interface ID as an opaque bit string without any internal
+   structure.<a href="#section-2.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-3">Note that the uniqueness of interface identifiers is independent of
+   the uniqueness of IPv6 addresses.  For example, a Global Unicast
+   address may be created with an interface identifier that is only
+   unique on a single subnet, and a Link-Local address may be created
+   with interface identifier that is unique over multiple subnets.<a href="#section-2.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-4">Interface Identifiers are 64 bit long except if the first three
+   bits of the address are 000, or when the addresses are manually
+   configured, or by exceptions defined in standards track documents. The
+   rationale for using 64 bit Interface Identifiers can be found in <span>[<a href="#RFC7421" class="cite xref">RFC7421</a>]</span>. An example of a standards track exception is <span>[<a href="#RFC6164" class="cite xref">RFC6164</a>]</span> that standardises 127 bit prefixes on inter-router
+   point-to-point links.<a href="#section-2.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-5">The details of forming interface identifiers are defined in other
+   specifications, such as "Privacy Extensions for Stateless Address
+   Autoconfiguration in IPv6" <span>[<a href="#RFC4941" class="cite xref">RFC4941</a>]</span> or "A Method for
+   Generating Semantically Opaque Interface Identifiers with IPv6
+   Stateless Address Autoconfiguration (SLAAC)"<span>[<a href="#RFC7217" class="cite xref">RFC7217</a>]</span>.
+   Specific cases are described in appropriate "IPv6 over &lt;link&gt;"
+   specifications, such as "IPv6 over Ethernet" <span>[<a href="#RFC2464" class="cite xref">RFC2464</a>]</span>
+   and "Transmission of IPv6 Packets over ITU-T G.9959 Networks" <span>[<a href="#RFC7428" class="cite xref">RFC7428</a>]</span>.  The security and privacy considerations for IPv6
+   address generation is described in <span>[<a href="#RFC7721" class="cite xref">RFC7721</a>]</span>.<a href="#section-2.4.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-6">Earlier versions of this document described a method of forming
+   interface identifiers derived from IEEE MAC-layer addresses call
+   Modified EUI-64 format. These are described in Appendix A and are no
+   longer recommended.<a href="#section-2.4.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Unspecified">
+<section id="section-2.4.2">
+          <h4 id="name-the-unspecified-address">
+<a href="#section-2.4.2" class="section-number selfRef">2.4.2. </a><a href="#name-the-unspecified-address" class="section-name selfRef">The Unspecified Address</a>
+          </h4>
+<p id="section-2.4.2-1">The address 0:0:0:0:0:0:0:0 is called the unspecified address.  It
+   must never be assigned to any node.  It indicates the absence of an
+   address.  One example of its use is in the Source Address field of
+   any IPv6 packets sent by an initializing host before it has learned
+   its own address.<a href="#section-2.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.2-2">The unspecified address must not be used as the destination address
+   of IPv6 packets or in IPv6 Routing headers.  An IPv6 packet with a
+   source address of unspecified must never be forwarded by an IPv6
+   router.<a href="#section-2.4.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Loopback">
+<section id="section-2.4.3">
+          <h4 id="name-the-loopback-address">
+<a href="#section-2.4.3" class="section-number selfRef">2.4.3. </a><a href="#name-the-loopback-address" class="section-name selfRef">The Loopback Address</a>
+          </h4>
+<p id="section-2.4.3-1">The unicast address 0:0:0:0:0:0:0:1 is called the loopback address.
+   It may be used by a node to send an IPv6 packet to itself.  It must
+   not be assigned to any physical interface.  It is treated as having
+   Link-Local scope, and may be thought of as the Link-Local unicast
+   address of a virtual interface (typically called the "loopback
+   interface") to an imaginary link that goes nowhere.<a href="#section-2.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.3-2">The loopback address must not be used as the source address in IPv6
+   packets that are sent outside of a single node.  An IPv6 packet with
+   a destination address of loopback must never be sent outside of a
+   single node and must never be forwarded by an IPv6 router.  A packet
+   received on an interface with a destination address of loopback must
+   be dropped.<a href="#section-2.4.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Global">
+<section id="section-2.4.4">
+          <h4 id="name-global-unicast-addresses">
+<a href="#section-2.4.4" class="section-number selfRef">2.4.4. </a><a href="#name-global-unicast-addresses" class="section-name selfRef">Global Unicast Addresses</a>
+          </h4>
+<p id="section-2.4.4-1">The general format for IPv6 Global Unicast addresses is as follows:<a href="#section-2.4.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.4-2">
+<pre>
+|         n bits         |   m bits  |       128-n-m bits         |
++------------------------+-----------+----------------------------+
+| global routing prefix  | subnet ID |       interface ID         |
++------------------------+-----------+----------------------------+
+</pre><a href="#section-2.4.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4.4-3">where the global routing prefix is a (typically hierarchically-
+   structured) value assigned to a site (a cluster of subnets/links), the
+   subnet ID is an identifier of a link within the site, and the
+   interface ID is as defined in <a href="#II" class="auto internal xref">Section 2.4.1</a>.<a href="#section-2.4.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4.4-4">Examples of Global Unicast addresses that start with binary 000 are
+   the IPv6 address with embedded IPv4 addresses described in <a href="#Embedded" class="auto internal xref">Section 2.4.5</a>.  An example of global addresses starting with a
+   binary value other than 000 (and therefore having a 64-bit interface
+   ID field) can be found in <span>[<a href="#RFC3587" class="cite xref">RFC3587</a>]</span>.<a href="#section-2.4.4-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Embedded">
+<section id="section-2.4.5">
+          <h4 id="name-ipv6-addresses-with-embedde">
+<a href="#section-2.4.5" class="section-number selfRef">2.4.5. </a><a href="#name-ipv6-addresses-with-embedde" class="section-name selfRef">IPv6 Addresses with Embedded IPv4 Addresses</a>
+          </h4>
+<p id="section-2.4.5-1">Two types of IPv6 addresses are defined that carry an IPv4 address in
+   the low-order 32 bits of the address.  These are the "IPv4-Compatible
+   IPv6 address" and the "IPv4-mapped IPv6 address".<a href="#section-2.4.5-1" class="pilcrow">¶</a></p>
+<div id="IPv4_Compatible">
+<section id="section-2.4.5.1">
+            <h5 id="name-ipv4-compatible-ipv6-addres">
+<a href="#section-2.4.5.1" class="section-number selfRef">2.4.5.1. </a><a href="#name-ipv4-compatible-ipv6-addres" class="section-name selfRef">IPv4-Compatible IPv6 Address</a>
+            </h5>
+<p id="section-2.4.5.1-1">The "IPv4-Compatible IPv6 address" was defined to assist in the IPv6
+   transition.  The format of the "IPv4-Compatible IPv6 address" is as
+   follows:<a href="#section-2.4.5.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.5.1-2">
+<pre>
+|                80 bits               | 16 |      32 bits        |
++--------------------------------------+--------------------------+
+|0000..............................0000|0000|    IPv4 address     |
++--------------------------------------+----+---------------------+
+</pre><a href="#section-2.4.5.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4.5.1-3">Note: The IPv4 address used in the "IPv4-Compatible IPv6 address"
+   must be a globally-unique IPv4 unicast address.<a href="#section-2.4.5.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.4.5.1-4">The "IPv4-Compatible IPv6 address" is now deprecated because the
+   current IPv6 transition mechanisms no longer use these addresses.
+   New or updated implementations are not required to support this
+   address type.<a href="#section-2.4.5.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Mapped">
+<section id="section-2.4.5.2">
+            <h5 id="name-ipv4-mapped-ipv6-address">
+<a href="#section-2.4.5.2" class="section-number selfRef">2.4.5.2. </a><a href="#name-ipv4-mapped-ipv6-address" class="section-name selfRef">IPv4-Mapped IPv6 Address</a>
+            </h5>
+<p id="section-2.4.5.2-1">A second type of IPv6 address that holds an embedded IPv4 address is
+   defined.  This address type is used to represent the addresses of
+   IPv4 nodes as IPv6 addresses.  The format of the "IPv4-mapped IPv6
+   address" is as follows:<a href="#section-2.4.5.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.5.2-2">
+<pre>
+|                80 bits               | 16 |      32 bits        |
++--------------------------------------+--------------------------+
+|0000..............................0000|ffff|    IPv4 address     |
++--------------------------------------+----+---------------------+
+</pre><a href="#section-2.4.5.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4.5.2-3">See <span>[<a href="#RFC4038" class="cite xref">RFC4038</a>]</span> for background on the usage of the
+   "IPv4-mapped IPv6 address".<a href="#section-2.4.5.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="Link-Local">
+<section id="section-2.4.6">
+          <h4 id="name-link-local-ipv6-unicast-add">
+<a href="#section-2.4.6" class="section-number selfRef">2.4.6. </a><a href="#name-link-local-ipv6-unicast-add" class="section-name selfRef">Link-Local IPv6 Unicast Addresses</a>
+          </h4>
+<p id="section-2.4.6-1">Link-Local addresses are for use on a single link.  Link-Local
+   addresses have the following format:<a href="#section-2.4.6-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.6-2">
+<pre>
+|   10     |
+|  bits    |         54 bits         |          64 bits           |
++----------+-------------------------+----------------------------+
+|1111111010|           0             |       interface ID         |
++----------+-------------------------+----------------------------+
+</pre><a href="#section-2.4.6-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4.6-3">Link-Local addresses are designed to be used for addressing on a
+   single link for purposes such as automatic address configuration,
+   neighbor discovery, or when no routers are present.<a href="#section-2.4.6-3" class="pilcrow">¶</a></p>
+<p id="section-2.4.6-4">Routers must not forward any packets with Link-Local source or
+   destination addresses to other links.<a href="#section-2.4.6-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Other">
+<section id="section-2.4.7">
+          <h4 id="name-other-local-unicast-ipv6-ad">
+<a href="#section-2.4.7" class="section-number selfRef">2.4.7. </a><a href="#name-other-local-unicast-ipv6-ad" class="section-name selfRef">Other Local Unicast IPv6 Addresses</a>
+          </h4>
+<p id="section-2.4.7-1">Unique Local Addresses (ULA) <span>[<a href="#RFC4193" class="cite xref">RFC4193</a>]</span>, the current
+  form of Local IPv6 Addresses, are intended to be used for local
+  communications, have global unicast scope, and are not expected to be
+  routable on the global Internet.<a href="#section-2.4.7-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.7-2">Site-Local addresses, deprecated by <span>[<a href="#RFC3879" class="cite xref">RFC3879</a>]</span>, the
+  previous form of Local IPv6 Addresses, were originally designed to be
+  used for addressing inside of a site without the need for a global
+  prefix.<a href="#section-2.4.7-2" class="pilcrow">¶</a></p>
+<p id="section-2.4.7-3">The special behavior of Site-Local defined in <span>[<a href="#RFC3513" class="cite xref">RFC3513</a>]</span> must no longer be supported in new implementations
+  (i.e., new implementations must treat this prefix as Global Unicast).
+  Existing implementations and deployments may continue to use this
+  prefix.<a href="#section-2.4.7-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="Anycast">
+<section id="section-2.5">
+        <h3 id="name-anycast-addresses">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-anycast-addresses" class="section-name selfRef">Anycast Addresses</a>
+        </h3>
+<p id="section-2.5-1">An IPv6 anycast address is an address that is assigned to more than
+   one interface (typically belonging to different nodes), with the
+   property that a packet sent to an anycast address is routed to the
+   "nearest" interface having that address, according to the routing
+   protocols' measure of distance.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
+<p id="section-2.5-2">Anycast addresses are allocated from the unicast address space, using
+   any of the defined unicast address formats.  Thus, anycast addresses
+   are syntactically indistinguishable from unicast addresses.  When a
+   unicast address is assigned to more than one interface, thus turning
+   it into an anycast address, the nodes to which the address is
+   assigned must be explicitly configured to know that it is an anycast
+   address.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
+<p id="section-2.5-3">For any assigned anycast address, there is a longest prefix P of that
+   address that identifies the topological region in which all
+   interfaces belonging to that anycast address reside.  Within the
+   region identified by P, the anycast address must be maintained as a
+   separate entry in the routing system (commonly referred to as a "host
+   route"); outside the region identified by P, the anycast address may
+   be aggregated into the routing entry for prefix P.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
+<p id="section-2.5-4">Note that in the worst case, the prefix P of an anycast set may be
+   the null prefix, i.e., the members of the set may have no topological
+   locality.  In that case, the anycast address must be maintained as a
+   separate routing entry throughout the entire Internet, which presents
+   a severe scaling limit on how many such "global" anycast sets may be
+   supported.  Therefore, it is expected that support for global anycast
+   sets may be unavailable or very restricted.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
+<p id="section-2.5-5">One expected use of anycast addresses is to identify the set of
+   routers belonging to an organization providing Internet service.
+   Such addresses could be used as intermediate addresses in an IPv6
+   Routing header, to cause a packet to be delivered via a particular
+   service provider or sequence of service providers.<a href="#section-2.5-5" class="pilcrow">¶</a></p>
+<p id="section-2.5-6">Some other possible uses are to identify the set of routers attached
+   to a particular subnet, or the set of routers providing entry into a
+   particular routing domain.<a href="#section-2.5-6" class="pilcrow">¶</a></p>
+<div id="Required_AC">
+<section id="section-2.5.1">
+          <h4 id="name-required-anycast-address">
+<a href="#section-2.5.1" class="section-number selfRef">2.5.1. </a><a href="#name-required-anycast-address" class="section-name selfRef">Required Anycast Address</a>
+          </h4>
+<p id="section-2.5.1-1">The Subnet-Router anycast address is predefined.  Its format is as
+   follows:<a href="#section-2.5.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.5.1-2">
+<pre>
+|                         n bits                 |   128-n bits   |
++------------------------------------------------+----------------+
+|                   subnet prefix                | 00000000000000 |
++------------------------------------------------+----------------+
+</pre><a href="#section-2.5.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.5.1-3">The "subnet prefix" in an anycast address is the prefix that
+   identifies a specific link.  This anycast address is syntactically
+   the same as a unicast address for an interface on the link with the
+   interface identifier set to zero.<a href="#section-2.5.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-4">Packets sent to the Subnet-Router anycast address will be delivered
+   to one router on the subnet.  All routers are required to support the
+   Subnet-Router anycast addresses for the subnets to which they have
+   interfaces.<a href="#section-2.5.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-5">The Subnet-Router anycast address is intended to be used for
+   applications where a node needs to communicate with any one of the
+   set of routers.<a href="#section-2.5.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="Multicast">
+<section id="section-2.6">
+        <h3 id="name-multicast-addresses">
+<a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-multicast-addresses" class="section-name selfRef">Multicast Addresses</a>
+        </h3>
+<p id="section-2.6-1">An IPv6 multicast address is an identifier for a group of interfaces
+   (typically on different nodes).  An interface may belong to any
+   number of multicast groups.  Multicast addresses have the following
+   format:<a href="#section-2.6-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.6-2">
+<pre>
+|   8    |  4 |  4 |                  112 bits                   |
++------ -+----+----+---------------------------------------------+
+|11111111|flgs|scop|                  group ID                   |
++--------+----+----+---------------------------------------------+
+</pre><a href="#section-2.6-2" class="pilcrow">¶</a>
+</div>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6-3.1">
+            <p id="section-2.6-3.1.1">binary 11111111 at the start of the address identifies the address
+      as being a multicast address.<a href="#section-2.6-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<div class="alignLeft art-text artwork" id="section-2.6-4">
+<pre>
+                                 +-+-+-+-+
+   flgs is a set of 4 flags:     |0|R|P|T|
+                                 +-+-+-+-+
+</pre><a href="#section-2.6-4" class="pilcrow">¶</a>
+</div>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6-5.1">
+            <ul class="normal">
+<li class="normal" id="section-2.6-5.1.1.1">
+                <p id="section-2.6-5.1.1.1.1">The high-order flag is reserved, and must be initialized to 0.<a href="#section-2.6-5.1.1.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.6-5.1.1.2">
+                <p id="section-2.6-5.1.1.2.1"> T = 0 indicates a permanently-assigned ("well-known") multicast
+   address, assigned by the Internet Assigned Numbers Authority
+   (IANA).<a href="#section-2.6-5.1.1.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.6-5.1.1.3">
+                <p id="section-2.6-5.1.1.3.1">T = 1 indicates a non-permanently-assigned ("transient" or
+   "dynamically" assigned) multicast address.<a href="#section-2.6-5.1.1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.6-5.1.1.4">
+                <p id="section-2.6-5.1.1.4.1">The P flag's definition and usage can be found in <span>[<a href="#RFC3306" class="cite xref">RFC3306</a>]</span>.<a href="#section-2.6-5.1.1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.6-5.1.1.5">
+                <p id="section-2.6-5.1.1.5.1">The R flag's definition and usage can be found in <span>[<a href="#RFC3956" class="cite xref">RFC3956</a>]</span>.<a href="#section-2.6-5.1.1.5.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          <li class="normal ulEmpty" id="section-2.6-5.2">
+            <p id="section-2.6-5.2.1">scop is a 4-bit multicast scope value used to limit the scope of
+      the multicast group.  The values are as follows:<a href="#section-2.6-5.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-2.6-5.3">
+            <ul class="compact normal">
+<li class="compact normal" id="section-2.6-5.3.1.1">
+                <p id="section-2.6-5.3.1.1.1">0  reserved<a href="#section-2.6-5.3.1.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.2">
+                <p id="section-2.6-5.3.1.2.1">1  Interface-Local scope<a href="#section-2.6-5.3.1.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.3">
+                <p id="section-2.6-5.3.1.3.1">2  Link-Local scope<a href="#section-2.6-5.3.1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.4">
+                <p id="section-2.6-5.3.1.4.1">3  Realm-Local scope<a href="#section-2.6-5.3.1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.5">
+                <p id="section-2.6-5.3.1.5.1">4  Admin-Local scope<a href="#section-2.6-5.3.1.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.6">
+                <p id="section-2.6-5.3.1.6.1">5  Site-Local scope<a href="#section-2.6-5.3.1.6.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.7">
+                <p id="section-2.6-5.3.1.7.1">6  (unassigned)<a href="#section-2.6-5.3.1.7.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.8">
+                <p id="section-2.6-5.3.1.8.1">7  (unassigned)<a href="#section-2.6-5.3.1.8.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.9">
+                <p id="section-2.6-5.3.1.9.1">8  Organization-Local scope<a href="#section-2.6-5.3.1.9.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.10">
+                <p id="section-2.6-5.3.1.10.1">9  (unassigned)<a href="#section-2.6-5.3.1.10.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.11">
+                <p id="section-2.6-5.3.1.11.1">A  (unassigned)<a href="#section-2.6-5.3.1.11.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.12">
+                <p id="section-2.6-5.3.1.12.1">B  (unassigned)<a href="#section-2.6-5.3.1.12.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.13">
+                <p id="section-2.6-5.3.1.13.1">C  (unassigned)<a href="#section-2.6-5.3.1.13.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.14">
+                <p id="section-2.6-5.3.1.14.1">D  (unassigned)<a href="#section-2.6-5.3.1.14.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.15">
+                <p id="section-2.6-5.3.1.15.1">E  Global scope<a href="#section-2.6-5.3.1.15.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.16">
+                <p id="section-2.6-5.3.1.16.1">F  reserved<a href="#section-2.6-5.3.1.16.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.17">
+                <p id="section-2.6-5.3.1.17.1">Interface-Local scope spans only a single interface on a node and
+   is useful only for loopback transmission of multicast.  Packets with
+   interface-local scope received from another node must be
+   discarded.<a href="#section-2.6-5.3.1.17.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.18">
+                <p id="section-2.6-5.3.1.18.1">Link-Local multicast scope spans the same topological region as the
+   corresponding unicast scope.<a href="#section-2.6-5.3.1.18.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.19">
+                <p id="section-2.6-5.3.1.19.1">Interface-Local, Link-Local, and Realm-Local scope boundaries are
+   automatically derived from physical connectivity or other
+   non-multicast-related configurations.  Global scope has no boundary.
+   The boundaries of all other non-reserved scopes of Admin-Local or
+   larger are administratively configured.  For reserved scopes, the way
+   of configuring their boundaries will be defined when the semantics of
+   the scope are defined.<a href="#section-2.6-5.3.1.19.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.20">
+                <p id="section-2.6-5.3.1.20.1">According to <span>[<a href="#RFC4007" class="cite xref">RFC4007</a>]</span>, the zone of a Realm-Local scope
+   must fall within zones of larger scope.  Because the zone of a
+   Realm-Local scope is configured automatically while the zones of
+   larger scopes are configured manually, care must be taken in the
+   definition of those larger scopes to ensure that the inclusion
+   constraint is met.<a href="#section-2.6-5.3.1.20.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.21">
+                <p id="section-2.6-5.3.1.21.1">Realm-Local scopes created by different network technologies are
+   considered to be independent and will have different zone indices (see
+   Section 6 of <span>[<a href="#RFC4007" class="cite xref">RFC4007</a>]</span>).  A router with interfaces on
+   links using different network technologies does not forward traffic
+   between the Realm-Local multicast scopes defined by those
+   technologies.<a href="#section-2.6-5.3.1.21.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.22">
+                <p id="section-2.6-5.3.1.22.1">Site-Local scope is intended to span a single site.<a href="#section-2.6-5.3.1.22.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.23">
+                <p id="section-2.6-5.3.1.23.1">Organization-Local scope is intended to span multiple sites
+   belonging to a single organization.<a href="#section-2.6-5.3.1.23.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact normal" id="section-2.6-5.3.1.24">
+                <p id="section-2.6-5.3.1.24.1">scopes labeled "(unassigned)" are available for administrators
+         to define additional multicast regions.<a href="#section-2.6-5.3.1.24.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal ulEmpty" id="section-2.6-5.4">
+            <p id="section-2.6-5.4.1">group ID identifies the multicast group, either permanent or
+    transient, within the given scope.  Additional definitions of the
+    multicast group ID field structure are provided in <span>[<a href="#RFC3306" class="cite xref">RFC3306</a>]</span>.<a href="#section-2.6-5.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.6-6">The "meaning" of a permanently-assigned multicast address is
+   independent of the scope value.  For example, if the "NTP servers
+   group" is assigned a permanent multicast address with a group ID of
+   101 (hex), then<a href="#section-2.6-6" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6-7.1">
+            <p id="section-2.6-7.1.1">ff01:0:0:0:0:0:0:101 means all NTP servers on the same interface
+      (i.e., the same node) as the sender.<a href="#section-2.6-7.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-2.6-7.2">
+            <p id="section-2.6-7.2.1">ff02:0:0:0:0:0:0:101 means all NTP servers on the same link as the
+      sender.<a href="#section-2.6-7.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-2.6-7.3">
+            <p id="section-2.6-7.3.1">ff05:0:0:0:0:0:0:101 means all NTP servers in the same site as the
+      sender.<a href="#section-2.6-7.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal ulEmpty" id="section-2.6-7.4">
+            <p id="section-2.6-7.4.1">ff0e:0:0:0:0:0:0:101 means all NTP servers in the Internet.<a href="#section-2.6-7.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.6-8">Non-permanently-assigned multicast addresses are meaningful only
+   within a given scope.  For example, a group identified by the non-
+   permanent, site-local multicast address ff15:0:0:0:0:0:0:101 at one
+   site bears no relationship to a group using the same address at a
+   different site, nor to a non-permanent group using the same group ID
+   with a different scope, nor to a permanent group with the same group
+   ID.<a href="#section-2.6-8" class="pilcrow">¶</a></p>
+<p id="section-2.6-9">Multicast addresses must not be used as source addresses in IPv6
+   packets or appear in any Routing header.<a href="#section-2.6-9" class="pilcrow">¶</a></p>
+<p id="section-2.6-10">Routers must not forward any multicast packets beyond the scope
+   indicated by the scop field in the destination multicast address.<a href="#section-2.6-10" class="pilcrow">¶</a></p>
+<p id="section-2.6-11">Nodes must not originate a packet to a multicast address whose scop
+   field contains the reserved value 0; if such a packet is received, it
+   must be silently dropped.  Nodes should not originate a packet to a
+   multicast address whose scop field contains the reserved value F; if
+   such a packet is sent or received, it must be treated the same as
+   packets destined to a global (scop E) multicast address.<a href="#section-2.6-11" class="pilcrow">¶</a></p>
+<div id="Predefinded_MC">
+<section id="section-2.6.1">
+          <h4 id="name-pre-defined-multicast-addre">
+<a href="#section-2.6.1" class="section-number selfRef">2.6.1. </a><a href="#name-pre-defined-multicast-addre" class="section-name selfRef">Pre-Defined Multicast Addresses</a>
+          </h4>
+<p id="section-2.6.1-1">The following well-known multicast addresses are pre-defined.  The
+   group IDs defined in this section are defined for explicit scope
+   values.<a href="#section-2.6.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-2">Use of these group IDs for any other scope values, with the T flag
+   equal to 0, is not allowed.<a href="#section-2.6.1-2" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6.1-3.1">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.6.1-3.1.1">
+                <dt id="section-2.6.1-3.1.1.1">Reserved Multicast Addresses:</dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.2">ff00:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.3"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.4">ff01:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.4" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.5"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.6">ff02:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.6" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.7"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.8">ff03:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.8" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.9"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.10">ff04:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.10" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.11"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.12">ff05:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.12" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.13"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.14">ff06:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.14" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.15"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.16">ff07:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.16" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.17"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.18">ff08:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.18" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.19"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.20">ff09:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.20" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.21"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.22">ff0a:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.22" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.23"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.24">ff0b:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.24" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.25"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.26">ff0c:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.26" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.27"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.28">ff0d:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.28" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.29"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.30">ff0e:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.30" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-3.1.1.31"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-3.1.1.32">ff0f:0:0:0:0:0:0:0<a href="#section-2.6.1-3.1.1.32" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+<p id="section-2.6.1-4">The above multicast addresses are reserved and shall never be
+   assigned to any multicast group.<a href="#section-2.6.1-4" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6.1-5.1">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.6.1-5.1.1">
+                <dt id="section-2.6.1-5.1.1.1">All Nodes Addresses:</dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-5.1.1.2">ff01:0:0:0:0:0:0:1<a href="#section-2.6.1-5.1.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-5.1.1.3"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-5.1.1.4">ff02:0:0:0:0:0:0:1<a href="#section-2.6.1-5.1.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+<p id="section-2.6.1-6">The above multicast addresses identify the group of all IPv6 nodes,
+   within scope 1 (interface-local) or 2 (link-local).<a href="#section-2.6.1-6" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6.1-7.1">
+              <span class="break"></span><dl class="dlCompact dlParallel" id="section-2.6.1-7.1.1">
+                <dt id="section-2.6.1-7.1.1.1">All Routers Addresses: </dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-7.1.1.2">   ff01:0:0:0:0:0:0:2<a href="#section-2.6.1-7.1.1.2" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-7.1.1.3"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-7.1.1.4">ff02:0:0:0:0:0:0:2<a href="#section-2.6.1-7.1.1.4" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+<dt id="section-2.6.1-7.1.1.5"></dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-7.1.1.6">ff05:0:0:0:0:0:0:2<a href="#section-2.6.1-7.1.1.6" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+<p id="section-2.6.1-8">The above multicast addresses identify the group of all IPv6 routers,
+   within scope 1 (interface-local), 2 (link-local), or 5 (site-local).<a href="#section-2.6.1-8" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6.1-9.1">
+              <span class="break"></span><dl class="dlParallel" id="section-2.6.1-9.1.1">
+                <dt id="section-2.6.1-9.1.1.1"> Solicited-Node Address: </dt>
+                <dd style="margin-left: 15.0em" id="section-2.6.1-9.1.1.2">ff02:0:0:0:0:1:ffxx:xxxx<a href="#section-2.6.1-9.1.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+</dl>
+</li>
+          </ul>
+<p id="section-2.6.1-10">Solicited-Node multicast address are computed as a function of a
+   node's unicast and anycast addresses.  A Solicited-Node multicast
+   address is formed by taking the low-order 24 bits of an address
+   (unicast or anycast) and appending those bits to the prefix
+   FF02:0:0:0:0:1:FF00::/104 resulting in a multicast address in the
+   range<a href="#section-2.6.1-10" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6.1-11.1">
+              <p id="section-2.6.1-11.1.1">ff02:0:0:0:0:1:ff00:0000<a href="#section-2.6.1-11.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.6.1-12">to<a href="#section-2.6.1-12" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.6.1-13.1">
+              <p id="section-2.6.1-13.1.1">ff02:0:0:0:0:1:ffff:ffff<a href="#section-2.6.1-13.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.6.1-14">For example, the Solicited-Node multicast address corresponding to
+   the IPv6 address 4037::01:800:200e:8c6c is ff02::1:ff0e:8c6c.  IPv6
+   addresses that differ only in the high-order bits (e.g., due to
+   multiple high-order prefixes associated with different aggregations)
+   will map to the same Solicited-Node address, thereby reducing the
+   number of multicast addresses a node must join.<a href="#section-2.6.1-14" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-15">A node is required to compute and join (on the appropriate interface)
+   the associated Solicited-Node multicast addresses for all unicast and
+   anycast addresses that have been configured for the node's interfaces
+   (manually or automatically).<a href="#section-2.6.1-15" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-16">Additional defined multicast address can be found in the IANA IPv6
+   Multicast Address Allocation registry <span>[<a href="#IANA-MC" class="cite xref">IANA-MC</a>]</span><a href="#section-2.6.1-16" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="Node_Required">
+<section id="section-2.7">
+        <h3 id="name-a-nodes-required-addresses">
+<a href="#section-2.7" class="section-number selfRef">2.7. </a><a href="#name-a-nodes-required-addresses" class="section-name selfRef">A Node's Required Addresses</a>
+        </h3>
+<p id="section-2.7-1">A host is required to recognize the following addresses as
+   identifying itself:<a href="#section-2.7-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.7-2.1">
+            <span class="break"></span><dl class="dlParallel" id="section-2.7-2.1.1">
+              <dt id="section-2.7-2.1.1.1">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.2">Its required Link-Local address for each interface.<a href="#section-2.7-2.1.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-2.1.1.3">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.4">Any additional Unicast and Anycast addresses that have been
+   configured for the node's interfaces (manually or automatically).<a href="#section-2.7-2.1.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-2.1.1.5">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.6">The loopback address.<a href="#section-2.7-2.1.1.6" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-2.1.1.7">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.8">The All-Nodes multicast addresses defined in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#section-2.7-2.1.1.8" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-2.1.1.9">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.10">The Solicited-Node multicast address for each of its unicast and
+   anycast addresses.<a href="#section-2.7-2.1.1.10" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-2.1.1.11">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.12">Multicast addresses of all other groups to which the node
+   belongs.<a href="#section-2.7-2.1.1.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+        </ul>
+<p id="section-2.7-3">A router is required to recognize all addresses that a host is
+   required to recognize, plus the following addresses as identifying
+   itself:<a href="#section-2.7-3" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.7-4.1">
+            <span class="break"></span><dl class="dlParallel" id="section-2.7-4.1.1">
+              <dt id="section-2.7-4.1.1.1">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-4.1.1.2">The Subnet-Router Anycast addresses for all interfaces for which
+   it is configured to act as a router.<a href="#section-2.7-4.1.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-4.1.1.3">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-4.1.1.4">All other Anycast addresses with which the router has been
+   configured.<a href="#section-2.7-4.1.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.7-4.1.1.5">o</dt>
+              <dd style="margin-left: 1.5em" id="section-2.7-4.1.1.6">The All-Routers multicast addresses defined in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#section-2.7-4.1.1.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="IANA">
+<section id="section-3">
+      <h2 id="name-iana-considerations">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-3-1">RFC4291 is referenced in a number of IANA registries.  These
+   include:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-3-2.1">
+          <span class="break"></span><dl class="dlParallel" id="section-3-2.1.1">
+            <dt id="section-3-2.1.1.1">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.2">Internet Protocol Version 6 Address Space
+     <span>[<a href="#IANA-AD" class="cite xref">IANA-AD</a>]</span><a href="#section-3-2.1.1.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.3">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.4">IPv6 Global Unicast Address Assignments
+     <span>[<a href="#IANA-GU" class="cite xref">IANA-GU</a>]</span><a href="#section-3-2.1.1.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.5">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.6">IPv6 Multicast Address Space Registry
+     <span>[<a href="#IANA-MC" class="cite xref">IANA-MC</a>]</span><a href="#section-3-2.1.1.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.7">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.8">Application for an IPv6 Multicast Address
+     <span>[<a href="#IANA-MA" class="cite xref">IANA-MA</a>]</span><a href="#section-3-2.1.1.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.9">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.10">Internet Protocol Version 6 (IPv6) Anycast Addresses
+     <span>[<a href="#IANA-AC" class="cite xref">IANA-AC</a>]</span><a href="#section-3-2.1.1.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.11">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.12">IANA IPv6 Special-Purpose Address Registry
+    <span>[<a href="#IANA-SP" class="cite xref">IANA-SP</a>]</span><a href="#section-3-2.1.1.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.13">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.14">Reserved IPv6 Interface Identifiers
+    <span>[<a href="#IANA-ID" class="cite xref">IANA-ID</a>]</span><a href="#section-3-2.1.1.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.15">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.16">Number Resources
+    <span>[<a href="#IANA-NR" class="cite xref">IANA-NR</a>]</span><a href="#section-3-2.1.1.16" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.17">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.18">Protocol Registries
+    <span>[<a href="#IANA-PR" class="cite xref">IANA-PR</a>]</span><a href="#section-3-2.1.1.18" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.19">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.20">Technical requirements for authoritative name servers
+   <span>[<a href="#IANA-NS" class="cite xref">IANA-NS</a>]</span><a href="#section-3-2.1.1.20" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3-2.1.1.21">o</dt>
+            <dd style="margin-left: 1.5em" id="section-3-2.1.1.22">IP Flow Information Export (IPFIX) Entities
+   <span>[<a href="#IANA-FE" class="cite xref">IANA-FE</a>]</span><a href="#section-3-2.1.1.22" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</li>
+      </ul>
+<p id="section-3-3">The IANA should update these references to point to this document.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">There are also other references in IANA procedures documents that
+   the IANA should investigate to see if they should be updated.<a href="#section-3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Security">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">IPv6 addressing documents do not have any direct impact on Internet
+   infrastructure security.  Authentication of IPv6 packets is defined
+   in <span>[<a href="#RFC4302" class="cite xref">RFC4302</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">One area relavant to IPv6 addressing is privacy.  IPv6 addresses
+   can be created using interface identifiers constructed with unique
+   stable tokens.  The addresses created in this manner can be used to
+   track the movement of devices across the Internet.  Since earlier
+   versions of this document were published, several approaches have been
+   developed that mitigate these problems.  These are described in
+   "Security and Privacy Considerations for IPv6 Address Generation
+   Mechanisms" <span>[<a href="#RFC7721" class="cite xref">RFC7721</a>]</span>, "Privacy Extensions for
+   Stateless Address Autoconfiguration in IPv6" <span>[<a href="#RFC4941" class="cite xref">RFC4941</a>]</span>,
+   and "A Method for Generating Semantically Opaque Interface Identifiers
+   with IPv6 Stateless Address Autoconfiguration (SLAAC)" <span>[<a href="#RFC7217" class="cite xref">RFC7217</a>]</span>.<a href="#section-4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Ack">
+<section id="section-5">
+      <h2 id="name-acknowledgments">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="section-5-1">The authors would like to acknowledge the contributions of
+    Bill Simpson,
+    Bob Fink,
+    Bob Gilligan,
+    Brian Carpenter,
+    Christian Huitema,
+    Deborah Estrin,
+    Dimitry Haskin,
+    Erik Nordmark,
+    Greg Minshall,
+    James Woodyatt.
+    Jim Bound,
+    Jun-ichiro Itojun Hagino,
+    Larry Masinter,
+    Mahmood Ali,
+    Markku Savela,
+    Matt Crawford,
+    Paul Francis,
+    Peter Ford,
+    Roger Fajman,
+    Scott Bradner,
+    Sue Thomson,
+    Suresh Krishnan,
+    Tatuya Jinmei,
+    Thomas Narten,
+    Tom Harsch,
+    Tony Li, and
+    Yakov Rekhter.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">The authors would also like to acknowledge the authors of the updating
+   RFCs that were incorporated in this version of the document to move IPv6 to
+   Internet Standard.  This includes Marcelo Bagnulo, Congxiao Bao,
+   Mohamed Boucadair, Brian Carpenter, Ralph Droms, Christian Huitema,
+   Sheng Jiang, Seiichi Kawamura, Masanobu Kawashima, Xing Li, and Stig
+   Venaas.<a href="#section-5-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-6">
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-6man-rfc2460bis">[I-D.ietf-6man-rfc2460bis]</dt>
+      <dd>
+<span class="refAuthor">Deering, S. E.</span> and <span class="refAuthor">R. M. Hinden</span>, <span class="refTitle">"Internet Protocol, Version 6 (IPv6) Specification"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-6man-rfc2460bis-13</span>, <time datetime="2017-05-19" class="refDate">19 May 2017</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-6man-rfc2460bis-13">https://datatracker.ietf.org/doc/html/draft-ietf-6man-rfc2460bis-13</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="BCP198">[BCP198]</dt>
+        <dd>
+<span class="refAuthor">Boucadair, M.</span>, <span class="refAuthor">Petrescu, A.</span>, and <span class="refAuthor">F. Baker</span>, <span class="refTitle">"IPv6 Prefix Length Recommendation for Forwarding"</span>, <span class="seriesInfo">BCP 198</span>, <span class="seriesInfo">RFC 7608</span>, <span class="seriesInfo">DOI 10.17487/RFC7608</span>, <time datetime="2015-07" class="refDate">July 2015</time>, <span>&lt;<a href="http://www.rfc-editor.org/info/rfc7608">http://www.rfc-editor.org/info/rfc7608</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="EUI64">[EUI64]</dt>
+        <dd>
+<span class="refTitle">"IEEE, "Guidelines for 64-bit Global Identifier (EUI-64) Registration Authority""</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="http://standards.ieee.org/regauth/oui/tutorials/EUI64.html">http://standards.ieee.org/regauth/oui/tutorials/EUI64.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-AC">[IANA-AC]</dt>
+        <dd>
+<span class="refTitle">"Internet Protocol Version 6 (IPv6) Anycast Addresses"</span>, <span>&lt;<a href="http://www.iana.org/assignments/ipv6-anycast-addresses/ipv6-anycast-addresses.xhtml">http://www.iana.org/assignments/ipv6-anycast-addresses/ipv6-anycast-addresses.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-AD">[IANA-AD]</dt>
+        <dd>
+<span class="refTitle">"Internet Protocol Version 6 Address Space"</span>, <span>&lt;<a href="https://www.iana.org/assignments/ipv6-address-space/ipv6-address-space.xhtml">https://www.iana.org/assignments/ipv6-address-space/ipv6-address-space.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-FE">[IANA-FE]</dt>
+        <dd>
+<span class="refTitle">"IP Flow Information Export (IPFIX) Entities"</span>, <span>&lt;<a href="http://www.iana.org/assignments/ipfix/ipfix.xhtml">http://www.iana.org/assignments/ipfix/ipfix.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-GU">[IANA-GU]</dt>
+        <dd>
+<span class="refTitle">"IPv6 Global Unicast Address Assignments"</span>, <span>&lt;<a href="http://www.iana.org/assignments/ipv6-unicast-address-assignments/ipv6-unicast-address-assignments.xhtml">http://www.iana.org/assignments/ipv6-unicast-address-assignments/ipv6-unicast-address-assignments.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-ID">[IANA-ID]</dt>
+        <dd>
+<span class="refTitle">"IANA IPv6 Special-Purpose Address Registry"</span>, <span>&lt;<a href="http://www.iana.org/assignments/ipv6-interface-ids/ipv6-interface-ids.xhtml">http://www.iana.org/assignments/ipv6-interface-ids/ipv6-interface-ids.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-MA">[IANA-MA]</dt>
+        <dd>
+<span class="refTitle">"Application for an IPv6 Multicast Address"</span>, <span>&lt;<a href="https://www.iana.org/form/multicast-ipv6">https://www.iana.org/form/multicast-ipv6</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-MC">[IANA-MC]</dt>
+        <dd>
+<span class="refTitle">"IPv6 Multicast Address Space Registry"</span>, <span>&lt;<a href="http://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml">http://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-NR">[IANA-NR]</dt>
+        <dd>
+<span class="refTitle">"Number Resources"</span>, <span>&lt;<a href="http://https://www.iana.org/numbers">http://https://www.iana.org/numbers</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-NS">[IANA-NS]</dt>
+        <dd>
+<span class="refTitle">"Technical requirements for authoritative name servers"</span>, <span>&lt;<a href="https://www.iana.org/help/nameserver-requirements">https://www.iana.org/help/nameserver-requirements</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-PR">[IANA-PR]</dt>
+        <dd>
+<span class="refTitle">"Protocol Registries"</span>, <span>&lt;<a href="https://www.iana.org/protocols">https://www.iana.org/protocols</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-SP">[IANA-SP]</dt>
+        <dd>
+<span class="refTitle">"IANA IPv6 Special-Purpose Address Registry"</span>, <span>&lt;<a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml">https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2464">[RFC2464]</dt>
+        <dd>
+<span class="refAuthor">Crawford, M.</span>, <span class="refTitle">"Transmission of IPv6 Packets over Ethernet Networks"</span>, <span class="seriesInfo">RFC 2464</span>, <span class="seriesInfo">DOI 10.17487/RFC2464</span>, <time datetime="1998-12" class="refDate">December 1998</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2464">https://www.rfc-editor.org/info/rfc2464</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3306">[RFC3306]</dt>
+        <dd>
+<span class="refAuthor">Haberman, B.</span> and <span class="refAuthor">D. Thaler</span>, <span class="refTitle">"Unicast-Prefix-based IPv6 Multicast Addresses"</span>, <span class="seriesInfo">RFC 3306</span>, <span class="seriesInfo">DOI 10.17487/RFC3306</span>, <time datetime="2002-09" class="refDate">September 2002</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3306">https://www.rfc-editor.org/info/rfc3306</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3513">[RFC3513]</dt>
+        <dd>
+<span class="refAuthor">Hinden, R.</span> and <span class="refAuthor">S. Deering</span>, <span class="refTitle">"Internet Protocol Version 6 (IPv6) Addressing Architecture"</span>, <span class="seriesInfo">RFC 3513</span>, <span class="seriesInfo">DOI 10.17487/RFC3513</span>, <time datetime="2003-04" class="refDate">April 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3513">https://www.rfc-editor.org/info/rfc3513</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3587">[RFC3587]</dt>
+        <dd>
+<span class="refAuthor">Hinden, R.</span>, <span class="refAuthor">Deering, S.</span>, and <span class="refAuthor">E. Nordmark</span>, <span class="refTitle">"IPv6 Global Unicast Address Format"</span>, <span class="seriesInfo">RFC 3587</span>, <span class="seriesInfo">DOI 10.17487/RFC3587</span>, <time datetime="2003-08" class="refDate">August 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3587">https://www.rfc-editor.org/info/rfc3587</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3879">[RFC3879]</dt>
+        <dd>
+<span class="refAuthor">Huitema, C.</span> and <span class="refAuthor">B. Carpenter</span>, <span class="refTitle">"Deprecating Site Local Addresses"</span>, <span class="seriesInfo">RFC 3879</span>, <span class="seriesInfo">DOI 10.17487/RFC3879</span>, <time datetime="2004-09" class="refDate">September 2004</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3879">https://www.rfc-editor.org/info/rfc3879</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3956">[RFC3956]</dt>
+        <dd>
+<span class="refAuthor">Savola, P.</span> and <span class="refAuthor">B. Haberman</span>, <span class="refTitle">"Embedding the Rendezvous Point (RP) Address in an IPv6 Multicast Address"</span>, <span class="seriesInfo">RFC 3956</span>, <span class="seriesInfo">DOI 10.17487/RFC3956</span>, <time datetime="2004-11" class="refDate">November 2004</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3956">https://www.rfc-editor.org/info/rfc3956</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4007">[RFC4007]</dt>
+        <dd>
+<span class="refAuthor">Deering, S.</span>, <span class="refAuthor">Haberman, B.</span>, <span class="refAuthor">Jinmei, T.</span>, <span class="refAuthor">Nordmark, E.</span>, and <span class="refAuthor">B. Zill</span>, <span class="refTitle">"IPv6 Scoped Address Architecture"</span>, <span class="seriesInfo">RFC 4007</span>, <span class="seriesInfo">DOI 10.17487/RFC4007</span>, <time datetime="2005-03" class="refDate">March 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4007">https://www.rfc-editor.org/info/rfc4007</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4038">[RFC4038]</dt>
+        <dd>
+<span class="refAuthor">Shin, M., Ed.</span>, <span class="refAuthor">Hong, Y.</span>, <span class="refAuthor">Hagino, J.</span>, <span class="refAuthor">Savola, P.</span>, and <span class="refAuthor">E. M. Castro</span>, <span class="refTitle">"Application Aspects of IPv6 Transition"</span>, <span class="seriesInfo">RFC 4038</span>, <span class="seriesInfo">DOI 10.17487/RFC4038</span>, <time datetime="2005-03" class="refDate">March 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4038">https://www.rfc-editor.org/info/rfc4038</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4193">[RFC4193]</dt>
+        <dd>
+<span class="refAuthor">Hinden, R.</span> and <span class="refAuthor">B. Haberman</span>, <span class="refTitle">"Unique Local IPv6 Unicast Addresses"</span>, <span class="seriesInfo">RFC 4193</span>, <span class="seriesInfo">DOI 10.17487/RFC4193</span>, <time datetime="2005-10" class="refDate">October 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4193">https://www.rfc-editor.org/info/rfc4193</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4302">[RFC4302]</dt>
+        <dd>
+<span class="refAuthor">Kent, S.</span>, <span class="refTitle">"IP Authentication Header"</span>, <span class="seriesInfo">RFC 4302</span>, <span class="seriesInfo">DOI 10.17487/RFC4302</span>, <time datetime="2005-12" class="refDate">December 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4302">https://www.rfc-editor.org/info/rfc4302</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4632">[RFC4632]</dt>
+        <dd>
+<span class="refAuthor">Fuller, V.</span> and <span class="refAuthor">T. Li</span>, <span class="refTitle">"Classless Inter-domain Routing (CIDR): The Internet Address Assignment and Aggregation Plan"</span>, <span class="seriesInfo">BCP 122</span>, <span class="seriesInfo">RFC 4632</span>, <span class="seriesInfo">DOI 10.17487/RFC4632</span>, <time datetime="2006-08" class="refDate">August 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4632">https://www.rfc-editor.org/info/rfc4632</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4941">[RFC4941]</dt>
+        <dd>
+<span class="refAuthor">Narten, T.</span>, <span class="refAuthor">Draves, R.</span>, and <span class="refAuthor">S. Krishnan</span>, <span class="refTitle">"Privacy Extensions for Stateless Address Autoconfiguration in IPv6"</span>, <span class="seriesInfo">RFC 4941</span>, <span class="seriesInfo">DOI 10.17487/RFC4941</span>, <time datetime="2007-09" class="refDate">September 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4941">https://www.rfc-editor.org/info/rfc4941</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5942">[RFC5942]</dt>
+        <dd>
+<span class="refAuthor">Singh, H.</span>, <span class="refAuthor">Beebee, W.</span>, and <span class="refAuthor">E. Nordmark</span>, <span class="refTitle">"IPv6 Subnet Model: The Relationship between Links and Subnet Prefixes"</span>, <span class="seriesInfo">RFC 5942</span>, <span class="seriesInfo">DOI 10.17487/RFC5942</span>, <time datetime="2010-07" class="refDate">July 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5942">https://www.rfc-editor.org/info/rfc5942</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5952">[RFC5952]</dt>
+        <dd>
+<span class="refAuthor">Kawamura, S.</span> and <span class="refAuthor">M. Kawashima</span>, <span class="refTitle">"A Recommendation for IPv6 Address Text Representation"</span>, <span class="seriesInfo">RFC 5952</span>, <span class="seriesInfo">DOI 10.17487/RFC5952</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5952">https://www.rfc-editor.org/info/rfc5952</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6164">[RFC6164]</dt>
+        <dd>
+<span class="refAuthor">Kohno, M.</span>, <span class="refAuthor">Nitzan, B.</span>, <span class="refAuthor">Bush, R.</span>, <span class="refAuthor">Matsuzaki, Y.</span>, <span class="refAuthor">Colitti, L.</span>, and <span class="refAuthor">T. Narten</span>, <span class="refTitle">"Using 127-Bit IPv6 Prefixes on Inter-Router Links"</span>, <span class="seriesInfo">RFC 6164</span>, <span class="seriesInfo">DOI 10.17487/RFC6164</span>, <time datetime="2011-04" class="refDate">April 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6164">https://www.rfc-editor.org/info/rfc6164</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7217">[RFC7217]</dt>
+        <dd>
+<span class="refAuthor">Gont, F.</span>, <span class="refTitle">"A Method for Generating Semantically Opaque Interface Identifiers with IPv6 Stateless Address Autoconfiguration (SLAAC)"</span>, <span class="seriesInfo">RFC 7217</span>, <span class="seriesInfo">DOI 10.17487/RFC7217</span>, <time datetime="2014-04" class="refDate">April 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7217">https://www.rfc-editor.org/info/rfc7217</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7421">[RFC7421]</dt>
+        <dd>
+<span class="refAuthor">Carpenter, B., Ed.</span>, <span class="refAuthor">Chown, T.</span>, <span class="refAuthor">Gont, F.</span>, <span class="refAuthor">Jiang, S.</span>, <span class="refAuthor">Petrescu, A.</span>, and <span class="refAuthor">A. Yourtchenko</span>, <span class="refTitle">"Analysis of the 64-bit Boundary in IPv6 Addressing"</span>, <span class="seriesInfo">RFC 7421</span>, <span class="seriesInfo">DOI 10.17487/RFC7421</span>, <time datetime="2015-01" class="refDate">January 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7421">https://www.rfc-editor.org/info/rfc7421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7428">[RFC7428]</dt>
+        <dd>
+<span class="refAuthor">Brandt, A.</span> and <span class="refAuthor">J. Buron</span>, <span class="refTitle">"Transmission of IPv6 Packets over ITU-T G.9959 Networks"</span>, <span class="seriesInfo">RFC 7428</span>, <span class="seriesInfo">DOI 10.17487/RFC7428</span>, <time datetime="2015-02" class="refDate">February 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7428">https://www.rfc-editor.org/info/rfc7428</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7721">[RFC7721]</dt>
+      <dd>
+<span class="refAuthor">Cooper, A.</span>, <span class="refAuthor">Gont, F.</span>, and <span class="refAuthor">D. Thaler</span>, <span class="refTitle">"Security and Privacy Considerations for IPv6 Address Generation Mechanisms"</span>, <span class="seriesInfo">RFC 7721</span>, <span class="seriesInfo">DOI 10.17487/RFC7721</span>, <time datetime="2016-03" class="refDate">March 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7721">https://www.rfc-editor.org/info/rfc7721</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</section>
+<div id="Modified">
+<section id="appendix-A">
+      <h2 id="name-modified-eui-64-format-inte">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-modified-eui-64-format-inte" class="section-name selfRef">Modified EUI-64 Format Interface Identifiers</a>
+      </h2>
+<p id="appendix-A-1">Modified EUI-64 format-based interface identifiers may have
+   universal scope when derived from a universal token (e.g., IEEE 802
+   48-bit MAC or IEEE EUI-64 identifiers <span>[<a href="#EUI64" class="cite xref">EUI64</a>]</span>) or may
+   have local scope where a global token is not being used (e.g., serial
+   links, tunnel end-points) or where global tokens are undesirable
+   (e.g., temporary tokens for privacy <span>[<a href="#RFC4941" class="cite xref">RFC4941</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">Modified EUI-64 format interface identifiers are formed by inverting
+   the "u" bit (universal/local bit in IEEE EUI-64 terminology) when
+   forming the interface identifier from IEEE EUI-64 identifiers.  In
+   the resulting Modified EUI-64 format, the "u" bit is set to one (1)
+   to indicate universal scope, and it is set to zero (0) to indicate
+   local scope.  The first three octets in binary of an IEEE EUI-64
+   identifier are as follows:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A-3">
+<pre>
+       0       0 0       1 1       2
+      |0       7 8       5 6       3|
+      +----+----+----+----+----+----+
+      |cccc|ccug|cccc|cccc|cccc|cccc|
+      +----+----+----+----+----+----+
+</pre><a href="#appendix-A-3" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A-4">written in Internet standard bit-order, where "u" is the
+   universal/local bit, "g" is the individual/group bit, and "c" is the
+   bits of the company_id.  Appendix A, "Creating Modified EUI-64 Format
+   Interface Identifiers", provides examples on the creation of Modified
+   EUI-64 format-based interface identifiers.<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+<p id="appendix-A-5">The motivation for inverting the "u" bit when forming an interface
+   identifier is to make it easy for system administrators to hand
+   configure non-global identifiers when hardware tokens are not
+   available.  This is expected to be the case for serial links and
+   tunnel end-points, for example.  The alternative would have been for
+   these to be of the form 0200:0:0:1, 0200:0:0:2, etc., instead of the
+   much simpler 0:0:0:1, 0:0:0:2, etc.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
+<p id="appendix-A-6">IPv6 nodes are not required to validate that interface identifiers
+   created with modified EUI-64 tokens with the "u" bit set to universal
+   are unique.<a href="#appendix-A-6" class="pilcrow">¶</a></p>
+<div id="Creating_M_EUI">
+<section id="appendix-A.1">
+        <h3 id="name-creating-modified-eui-64-fo">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-creating-modified-eui-64-fo" class="section-name selfRef">Creating Modified EUI-64 Format Interface Identifiers</a>
+        </h3>
+<p id="appendix-A.1-1">Depending on the characteristics of a specific link or node, there
+   are a number of approaches for creating Modified EUI-64 format
+   interface identifiers. This appendix describes some of these
+   approaches.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-2">Links or Nodes with IEEE EUI-64 Identifiers<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-3">The only change needed to transform an IEEE EUI-64 identifier to an
+   interface identifier is to invert the "u" (universal/local) bit.  An
+   example is a globally unique IEEE EUI-64 identifier of the form:<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-4">
+<pre>
+|0              1|1              3|3              4|4              6|
+|0              5|6              1|2              7|8              3|
++----------------+----------------+----------------+----------------+
+|cccccc0gcccccccc|ccccccccmmmmmmmm|mmmmmmmmmmmmmmmm|mmmmmmmmmmmmmmmm|
++----------------+----------------+----------------+----------------+
+</pre><a href="#appendix-A.1-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-5">where "c" is the bits of the assigned company_id, "0" is the value of
+   the universal/local bit to indicate universal scope, "g" is
+   individual/group bit, and "m" is the bits of the manufacturer-
+   selected extension identifier.  The IPv6 interface identifier would
+   be of the form:<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-6">
+<pre>
+|0              1|1              3|3              4|4              6|
+|0              5|6              1|2              7|8              3|
++----------------+----------------+----------------+----------------+
+|cccccc1gcccccccc|ccccccccmmmmmmmm|mmmmmmmmmmmmmmmm|mmmmmmmmmmmmmmmm|
++----------------+----------------+----------------+----------------+
+</pre><a href="#appendix-A.1-6" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-7">The only change is inverting the value of the universal/local bit.<a href="#appendix-A.1-7" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-8">Links or Nodes with IEEE 802 48-bit MACs<a href="#appendix-A.1-8" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-9"><span>[<a href="#EUI64" class="cite xref">EUI64</a>]</span> defines a method to create an IEEE EUI-64
+   identifier from an IEEE 48-bit MAC identifier.  This is to insert two
+   octets, with hexadecimal values of 0xFF and 0xFE (see the Note at the
+   end of appendix), in the middle of the 48-bit MAC (between the
+   company_id and vendor-supplied id).  An example is the 48-bit IEEE MAC
+   with Global scope:<a href="#appendix-A.1-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-10">
+<pre>
+|0              1|1              3|3              4|
+|0              5|6              1|2              7|
++----------------+----------------+----------------+
+|cccccc0gcccccccc|ccccccccmmmmmmmm|mmmmmmmmmmmmmmmm|
++----------------+----------------+----------------+
+</pre><a href="#appendix-A.1-10" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-11">where "c" is the bits of the assigned company_id, "0" is the value of
+   the universal/local bit to indicate Global scope, "g" is
+   individual/group bit, and "m" is the bits of the manufacturer-
+   selected extension identifier.  The interface identifier would be of
+   the form:<a href="#appendix-A.1-11" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-12">
+<pre>
+|0              1|1              3|3              4|4              6|
+|0              5|6              1|2              7|8              3|
++----------------+----------------+----------------+----------------+
+|cccccc1gcccccccc|cccccccc11111111|11111110mmmmmmmm|mmmmmmmmmmmmmmmm|
++----------------+----------------+----------------+----------------+
+</pre><a href="#appendix-A.1-12" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-13">When IEEE 802 48-bit MAC addresses are available (on an interface or
+   a node), an implementation may use them to create interface
+   identifiers due to their availability and uniqueness properties.<a href="#appendix-A.1-13" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-14">Links with Other Kinds of Identifiers<a href="#appendix-A.1-14" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-15">There are a number of types of links that have link-layer interface
+   identifiers other than IEEE EUI-64 or IEEE 802 48-bit MACs.  Examples
+   include LocalTalk and Arcnet.  The method to create a Modified EUI-64
+   format identifier is to take the link identifier (e.g., the LocalTalk
+   8-bit node identifier) and zero fill it to the left.  For example, a
+   LocalTalk 8-bit node identifier of hexadecimal value 0x4F results in
+   the following interface identifier:<a href="#appendix-A.1-15" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-16">
+<pre>
+|0              1|1              3|3              4|4              6|
+|0              5|6              1|2              7|8              3|
++----------------+----------------+----------------+----------------+
+|0000000000000000|0000000000000000|0000000000000000|0000000001001111|
++----------------+----------------+----------------+----------------+
+</pre><a href="#appendix-A.1-16" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-17">Note that this results in the universal/local bit set to "0" to
+   indicate local scope.<a href="#appendix-A.1-17" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-18">Links without Identifiers<a href="#appendix-A.1-18" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-19">There are a number of links that do not have any type of built-in
+   identifier.  The most common of these are serial links and configured
+   tunnels.  Interface identifiers that are unique within a subnet
+   prefix must be chosen.<a href="#appendix-A.1-19" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-20">When no built-in identifier is available on a link, the preferred
+   approach is to use a universal interface identifier from another
+   interface or one that is assigned to the node itself.  When using
+   this approach, no other interface connecting the same node to the
+   same subnet prefix may use the same identifier.<a href="#appendix-A.1-20" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-21">If there is no universal interface identifier available for use on
+   the link, the implementation needs to create a local-scope interface
+   identifier.  The only requirement is that it be unique within a
+   subnet prefix.  There are many possible approaches to select a
+   subnet-prefix-unique interface identifier.  These include the
+   following:<a href="#appendix-A.1-21" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty">
+<li class="compact ulEmpty" id="appendix-A.1-22.1">
+            <p id="appendix-A.1-22.1.1">Manual Configuration<a href="#appendix-A.1-22.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="compact ulEmpty" id="appendix-A.1-22.2">
+            <p id="appendix-A.1-22.2.1">Node Serial Number<a href="#appendix-A.1-22.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="compact ulEmpty" id="appendix-A.1-22.3">
+            <p id="appendix-A.1-22.3.1">Other Node-Specific Token<a href="#appendix-A.1-22.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-23">The subnet-prefix-unique interface identifier should be generated in
+   a manner such that it does not change after a reboot of a node or if
+   interfaces are added or deleted from the node.<a href="#appendix-A.1-23" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-24">The selection of the appropriate algorithm is link and implementation
+   dependent.  The details on forming interface identifiers are defined
+   in the appropriate "IPv6 over &lt;link&gt;" specification.  It is strongly
+   recommended that a collision detection algorithm be implemented as
+   part of any automatic algorithm.<a href="#appendix-A.1-24" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="appendix-A.1-25">
+          <dt id="appendix-A.1-25.1">Note:</dt>
+          <dd style="margin-left: 3.5em" id="appendix-A.1-25.2">
+            <span>[<a href="#EUI64" class="cite xref">EUI64</a>]</span> actually defines 0xFF and
+    0xFF as the bits to be inserted to create an IEEE EUI-64 identifier
+    from an IEEE MAC- 48 identifier.  The 0xFF and 0xFE values are used
+    when starting with an IEEE EUI-48 identifier.  The incorrect value
+    was used in earlier versions of the specification due to a
+    misunderstanding about the differences between IEEE MAC-48 and EUI-48
+    identifiers.<a href="#appendix-A.1-25.2" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+<dt id="appendix-A.1-25.3"></dt>
+          <dd style="margin-left: 3.5em" id="appendix-A.1-25.4">This document purposely continues the use of 0xFF and
+   0xFE because it meets the requirements for IPv6 interface identifiers
+   (i.e., that they must be unique on the link), IEEE EUI-48 and MAC-48
+   identifiers are syntactically equivalent, and that it doesn't cause
+   any problems in practice.<a href="#appendix-A.1-25.4" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="Changes">
+<section id="appendix-B">
+      <h2 id="name-changes-since-rfc-4291">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-changes-since-rfc-4291" class="section-name selfRef">CHANGES SINCE RFC 4291</a>
+      </h2>
+<p id="appendix-B-1">This document has the following changes from RFC4291, "IP Version 6
+   Addressing Architecture":<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="appendix-B-2">
+        <dt id="appendix-B-2.1">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.2">Added Note: to <a href="#Addr" class="auto internal xref">Section 2</a> that the term
+    "prefix" is used in different contexts in IPv6: a prefix used by a
+    routing protocol, a prefix used by a node to determine if another
+    node is connected to the same link, and a prefix used to construct
+    the complete address of a node.<a href="#appendix-B-2.2" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.3">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.4">Added text to the last paragraph in <a href="#Model" class="auto internal xref">Section 2.1</a> to clarify the differences on how subnets are
+    hangled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
+    Subnet Model: The Relationship between Links and Subnet Prefixes".<a href="#appendix-B-2.4" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.5">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.6">Incorporate the updates made by RFC5952 in <a href="#Output" class="auto internal xref">Section 2.2.3</a> regarding the text format when outputting IPv6
+    addresses.  A new section was added for this and addresses shown in
+    this document were changed to lower case. This includes a reference
+    to RFC5952.<a href="#appendix-B-2.6" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.7">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.8">Incorporate the updates made by RFC6052.  The
+    change was to add a text in <a href="#Addr_Type" class="auto internal xref">Section 2.3</a> that points
+    to the IANA registries that records the prefix defined in RFC6052
+    and a number of other special use prefixes.<a href="#appendix-B-2.8" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.9">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.10">Clarified text that 64 bit Interface IDs are used
+    except when the first three bits of the address are 000, or addresses
+    are manually configured, or when defined by a standard track
+    document.  Added text that Modified EUI-64 identifiers not recommended
+    and moved the text describing the format to Appendix A.  This text
+    was moved from <a href="#Unicast" class="auto internal xref">Section 2.4</a> and is now consolidated in
+    <a href="#II" class="auto internal xref">Section 2.4.1</a>.  Also removed text in <a href="#Global" class="auto internal xref">Section 2.4.4</a>
+    relating to 64 bit Interface IDs.<a href="#appendix-B-2.10" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.11">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.12">Added text to <a href="#Unicast" class="auto internal xref">Section 2.4</a> summarizing
+    IPv6 unicast routing and referencing BCP198, citing RFC6164 as an example of
+    longer prefixes, and that IIDs are required to be 64 bits long as
+    described in RFC7421.<a href="#appendix-B-2.12" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.13">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.14">Incorporate the updates made by RFC7136 to deprecate
+     the U and G bits in Modified EUI-64 format Internet IDs.<a href="#appendix-B-2.14" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.15">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.16">Rename <a href="#Other" class="auto internal xref">Section 2.4.7</a> to "Other Local
+    Unicast Addresses" and rewrote the text to point to ULAs and say that
+    Site-Local addresses were deprecated by RFC3879.  The format of
+    Site-Local was removed.<a href="#appendix-B-2.16" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.17">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.18">Incorporate the updates made by RFC7346. The
+    change was to add Realm-Local scope to the multicast scope table in
+    <a href="#Multicast" class="auto internal xref">Section 2.6</a>, and add the updating text to the same
+    section.<a href="#appendix-B-2.18" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.19">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.20">Added a reference to the IANA Multicast
+     address registry in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#appendix-B-2.20" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.21">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.22">Added instructions in IANA Considerations to update
+    references in the IANA registries that currently point to RFC4291 to
+    point to this document.<a href="#appendix-B-2.22" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.23">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.24">Expanded Security Considerations Section to
+     discuss privacy issues related to using stable interface identifiers
+     to create IPv6 addresses, and reference solutions that mitigate
+     these issues such as RFC7721, RFC4941, RFC7271.<a href="#appendix-B-2.24" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd><dt id="appendix-B-2.25">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.26">Add note to <a href="#Ack" class="auto internal xref">Section 5</a> section acknowledging the
+     authors of the updating documents.<a href="#appendix-B-2.26" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.27">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.28">Updates to resolve the open Errata on RFC4291.
+     These are:<a href="#appendix-B-2.28" class="pilcrow">¶</a>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.29"></dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.30">
+          <span class="break"></span><dl class="dlParallel" id="appendix-B-2.30.1">
+            <dt id="appendix-B-2.30.1.1"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.2">Errata ID: 3480: Corrects the definition of Interface-Local
+       multicast scope to also state that packets with interface-local
+       scope received from another node must be discarded.<a href="#appendix-B-2.30.1.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.3"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.4"> Errata ID: 1627: Remove extraneous "of" in <a href="#Node_Required" class="auto internal xref">Section 2.7</a>.<a href="#appendix-B-2.30.1.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.5"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.6">Errata ID: 2702: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.7"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.8">Errata ID: 2735: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.9"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.10">Errata ID: 4406: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.11"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.12">Errata ID: 2406: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.13"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.14">Errata ID: 863: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.15"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.16">Errata ID: 864: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.16" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="appendix-B-2.30.1.17"></dt>
+            <dd style="margin-left: 1.5em" id="appendix-B-2.30.1.18">Errata ID: 866: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B-2.30.1.18" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-B-2.31">o</dt>
+        <dd style="margin-left: 1.5em" id="appendix-B-2.32">Editorial changes.<a href="#appendix-B-2.32" class="pilcrow">¶</a>
+</dd>
+      <dd class="break"></dd>
+</dl>
+<div id="ID_Changes">
+<section id="appendix-B.1">
+        <h3 id="name-change-history-since-rfc429">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-change-history-since-rfc429" class="section-name selfRef">Change History Since RFC4291</a>
+        </h3>
+<p id="appendix-B.1-1">NOTE TO RFC EDITOR:  Please remove this subsection prior to RFC
+      Publication<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-2">This section describes change history made in each Internet Draft
+    that went into producing this version.  The numbers identify the
+    Internet-Draft version in which the change was made.<a href="#appendix-B.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-3">Working Group Internet Drafts<a href="#appendix-B.1-3" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="appendix-B.1-4.1">
+            <span class="break"></span><dl class="dlParallel" id="appendix-B.1-4.1.1">
+              <dt id="appendix-B.1-4.1.1.1">09)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.2">Added text to the last paragraph in <a href="#Model" class="auto internal xref">Section 2.1</a> to clarify the differences on how subnets are
+    hangled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
+    Subnet Model: The Relationship between Links and Subnet Prefixes".<a href="#appendix-B.1-4.1.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.3">09)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.4">Removed short paragraph about manual configuration in <a href="#II" class="auto internal xref">Section 2.4.1</a> that was added in the -08 version.<a href="#appendix-B.1-4.1.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.5">09)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.6">Revised "Changes since RFC4291" Section to have a
+    summary of changes since RFC4291 and a separate subsection with a
+    change history of each Internet Draft.  This subsection will be
+    removed when the RFC is published.<a href="#appendix-B.1-4.1.1.6" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.7">09)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.8">Editorial changes.<a href="#appendix-B.1-4.1.1.8" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.9">08)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.10">Added Note: to <a href="#Addr" class="auto internal xref">Section 2</a> that the term
+    "prefix" is used in different contexts in IPv6: a prefix used by a
+    routing protocol, a prefix used by a node to determine if another
+    node is connected to the same link, and a prefix used to construct
+    the complete address of a node.<a href="#appendix-B.1-4.1.1.10" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.11">08)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.12">Based on results of IETF last call and extensive
+    w.g. list discussion, revised text to clarify that 64 bit Interface
+    IDs are used except when the first three bits of the address are 000, or
+    addresses are manually configured, or when defined by a standard
+    track document. This text was moved from <a href="#Unicast" class="auto internal xref">Section 2.4</a> and
+    is now consolidated in <a href="#II" class="auto internal xref">Section 2.4.1</a> Also removed text in <a href="#Global" class="auto internal xref">Section 2.4.4</a> relating to 64 bit Interface IDs.<a href="#appendix-B.1-4.1.1.12" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.13">08)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.14">Removed instruction to IANA fix error in Port
+    Number assignment.  IANA fixed the error on 4 March 2017.<a href="#appendix-B.1-4.1.1.14" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.15">08)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.16">Editorial changes.<a href="#appendix-B.1-4.1.1.16" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.17">07)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.18">Added text to <a href="#Unicast" class="auto internal xref">Section 2.4</a> summarizing
+    IPv6 unicast routing and referencing BCP198, citing RFC6164 as an example of
+    longer prefixes, and that IIDs are required to be 64 bits long as
+    described in RFC7421.<a href="#appendix-B.1-4.1.1.18" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.19">07)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.20">Based on review by Brian Haberman added reference
+    to RFC5952 in <a href="#Output" class="auto internal xref">Section 2.2.3</a>, corrected case errors in
+    <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>, and added a reference to the IANA
+    Multicast address registry in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#appendix-B.1-4.1.1.20" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.21">07)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.22">Corrected errors in <a href="#Output" class="auto internal xref">Section 2.2.3</a> where
+    the examples in 7. and 8. were reversed.<a href="#appendix-B.1-4.1.1.22" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.23">07)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.24">Editorial changes.<a href="#appendix-B.1-4.1.1.24" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.25">06)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.26">Editorial changes.<a href="#appendix-B.1-4.1.1.26" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.27">05)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.28">Expanded Security Considerations Section to
+     discuss privacy issues related to using stable interface identifiers
+     to create IPv6 addresses, and reference solutions that mitigate
+     these issues such as RFC7721, RFC4941, RFC7271.<a href="#appendix-B.1-4.1.1.28" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.29">05)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.30">Added instructions in IANA Considerations to update
+    references in the IANA registries that currently point to RFC4291 to
+    point to this document.<a href="#appendix-B.1-4.1.1.30" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.31">05)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.32">Rename <a href="#Other" class="auto internal xref">Section 2.4.7</a> to "Other Local
+    Unicast Addresses" and rewrote the text to point to ULAs and say that
+    Site-Local addresses were deprecated by RFC3879.  The format of
+    Site-Local was removed.<a href="#appendix-B.1-4.1.1.32" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.33">05)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.34">Added to <a href="#II" class="auto internal xref">Section 2.4.1</a> a reference to RFC7421
+    regarding the background on the 64 bit boundary in Interface
+    Identifiers.<a href="#appendix-B.1-4.1.1.34" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.35">05)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.36">Editorial changes.<a href="#appendix-B.1-4.1.1.36" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.37">04)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.38">Added text and a pointer to the ULA specification in
+    <a href="#Other" class="auto internal xref">Section 2.4.7</a><a href="#appendix-B.1-4.1.1.38" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.39">04)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.40">Removed old IANA Considerations text, this was left
+    from the baseline text from RFC4291 and should have been removed earlier.<a href="#appendix-B.1-4.1.1.40" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.41">04)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.42">Editorial changes.<a href="#appendix-B.1-4.1.1.42" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.43">03)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.44">Changes references in <a href="#II" class="auto internal xref">Section 2.4.1</a> that describes
+    the details of forming IIDs to RFC7271 and RFC7721.<a href="#appendix-B.1-4.1.1.44" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.45">02)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.46">Remove changes made by RFC7371 because there isn't
+    any known implementation experience.<a href="#appendix-B.1-4.1.1.46" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.47">01)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.48">Revised <a href="#II" class="auto internal xref">Section 2.4.1</a> on Interface
+    Identifiers to reflect current approach, this included saying
+    Modified EUI-64 identifiers not recommended and moved the text
+    describing the format to Appendix A.<a href="#appendix-B.1-4.1.1.48" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.49">01)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.50">Editorial changes.<a href="#appendix-B.1-4.1.1.50" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.51">00)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.52">Working Group Draft.<a href="#appendix-B.1-4.1.1.52" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-4.1.1.53">00)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.54">Editorial changes.<a href="#appendix-B.1-4.1.1.54" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+        </ul>
+<p id="appendix-B.1-5">Individual Internet Drafts<a href="#appendix-B.1-5" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="appendix-B.1-6.1">
+            <span class="break"></span><dl class="dlParallel" id="appendix-B.1-6.1.1">
+              <dt id="appendix-B.1-6.1.1.1">06)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.2">Incorporate the updates made by RFC7371. The
+     changes were to the flag bits and their definitions in <a href="#Multicast" class="auto internal xref">Section 2.6</a>.<a href="#appendix-B.1-6.1.1.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.3">05)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.4">Incorporate the updates made by RFC7346. The
+     change was to add Realm-Local scope to the multicast scope table in
+     <a href="#Multicast" class="auto internal xref">Section 2.6</a>, and add the updating text to the same
+     section.<a href="#appendix-B.1-6.1.1.4" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.5">04)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.6">Incorporate the updates made by RFC6052.  The
+     change was to add a text in <a href="#Addr_Type" class="auto internal xref">Section 2.3</a> that points
+     to the IANA registries that records the prefix defined in RFC6052
+     and a number of other special use prefixes.<a href="#appendix-B.1-6.1.1.6" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.7">03)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.8">Incorporate the updates made by RFC7136 to deprecate
+     the U and G bits in Modified EUI-64 format Internet IDs.<a href="#appendix-B.1-6.1.1.8" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.9">03)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.10">Add note to the reference section acknowledging the
+     authors of the updating documents.<a href="#appendix-B.1-6.1.1.10" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.11">03)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.12">Editorial changes.<a href="#appendix-B.1-6.1.1.12" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.13">02)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.14">Updates to resolve the open Errata on RFC4291.
+     These are:<a href="#appendix-B.1-6.1.1.14" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.15"></dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.16">
+                <span class="break"></span><dl class="dlParallel" id="appendix-B.1-6.1.1.16.1">
+                  <dt id="appendix-B.1-6.1.1.16.1.1"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.2">Errata ID: 3480: Corrects the definition of Interface-Local
+       multicast scope to also state that packets with interface-local
+       scope received from another node must be discarded.<a href="#appendix-B.1-6.1.1.16.1.2" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.3"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.4"> Errata ID: 1627: Remove extraneous "of" in <a href="#Node_Required" class="auto internal xref">Section 2.7</a>.<a href="#appendix-B.1-6.1.1.16.1.4" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.5"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.6">Errata ID: 2702: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.6" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.7"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.8">Errata ID: 2735: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.8" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.9"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.10">Errata ID: 4406: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.10" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.11"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.12">Errata ID: 2406: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.12" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.13"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.14">Errata ID: 863: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.14" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.15"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.16">Errata ID: 864: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.16" class="pilcrow">¶</a>
+</dd>
+                  <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.16.1.17"></dt>
+                  <dd style="margin-left: 1.5em" id="appendix-B.1-6.1.1.16.1.18">Errata ID: 866: This errata is marked rejected.  No change
+       is required.<a href="#appendix-B.1-6.1.1.16.1.18" class="pilcrow">¶</a>
+</dd>
+                <dd class="break"></dd>
+</dl>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.17">02)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.18">Update references
+     to current versions.<a href="#appendix-B.1-6.1.1.18" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.19">02)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.20">Editorial changes.<a href="#appendix-B.1-6.1.1.20" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.21">01)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.22">Incorporate the updates made by RFC5952 regarding
+     the text format when outputting IPv6 addresses.  A new section was
+     added for this and addresses shown in this document were changed to
+     lower case.<a href="#appendix-B.1-6.1.1.22" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.23">01)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.24">Revise this Section to document to show the changes
+     from RFC4291.<a href="#appendix-B.1-6.1.1.24" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.25">01)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.26">Editorial changes.<a href="#appendix-B.1-6.1.1.26" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="appendix-B.1-6.1.1.27">00)</dt>
+              <dd style="margin-left: 2.5em" id="appendix-B.1-6.1.1.28">Establish a baseline from RFC4291.  The only
+     intended changes are formatting (XML is slightly different from
+     .nroff), differences between an RFC and Internet Draft, fixing a few
+     ID Nits, and updates to the authors information.  There should not
+     be any content changes to the specification.<a href="#appendix-B.1-6.1.1.28" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-C">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Robert M. Hinden</span></div>
+<div dir="auto" class="left"><span class="org">Check Point Software</span></div>
+<div dir="auto" class="left"><span class="street-address">959 Skyway Road</span></div>
+<div dir="auto" class="left">
+<span class="locality">San Carlos</span>, <span class="region">CA</span> <span class="postal-code">94070</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">United States of America</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:bob.hinden@gmail.com" class="email">bob.hinden@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Stephen E. Deering</span></div>
+<div dir="auto" class="left"><span class="org">Retired</span></div>
+<div dir="auto" class="left">
+<span class="locality">Vancouver</span> <span class="region">British Columbia</span> </div>
+<div dir="auto" class="left"><span class="country-name">Canada</span></div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>

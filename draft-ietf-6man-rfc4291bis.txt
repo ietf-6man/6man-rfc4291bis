@@ -1014,7 +1014,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    node's unicast and anycast addresses.  A Solicited-Node multicast
    address is formed by taking the low-order 24 bits of an address
    (unicast or anycast) and appending those bits to the prefix
-   FF02:0:0:0:0:1:FF00::/104 resulting in a multicast address in the
+   ff02:0:0:0:0:1:ff00::/104 resulting in a multicast address in the
    range
 
       ff02:0:0:0:0:1:ff00:0000
@@ -1209,7 +1209,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
               <http://www.iana.org/assignments/ipv6-multicast-addresses/
               ipv6-multicast-addresses.xhtml>.
 
-   [IANA-NR]  "Number Resources", <http://https://www.iana.org/numbers>.
+   [IANA-NR]  "Number Resources", <https://www.iana.org/numbers>.
 
    [IANA-NS]  "Technical requirements for authoritative name servers",
               <https://www.iana.org/help/nameserver-requirements>.

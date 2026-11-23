@@ -713,7 +713,7 @@
    specifications, such as "IPv6 over Ethernet" <xref target="RFC2464"/>
    and "Transmission of IPv6 Packets over ITU-T G.9959 Networks" <xref
    target="RFC7428"/>.  The security and privacy considerations for IPv6
-   address generation is described in <xref target="RFC7721"/>.
+   address generation are described in <xref target="RFC7721"/>.
    </t>
 
    <t>Earlier versions of this document described a method of forming

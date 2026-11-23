@@ -570,11 +570,15 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    specifications, such as "Privacy Extensions for Stateless Address
    Autoconfiguration in IPv6" [RFC4941] or "A Method for Generating
    Semantically Opaque Interface Identifiers with IPv6 Stateless Address
-   Autoconfiguration (SLAAC)"[RFC7217].  Specific cases are described in
-   appropriate "IPv6 over <link>" specifications, such as "IPv6 over
-   Ethernet" [RFC2464] and "Transmission of IPv6 Packets over ITU-T
-   G.9959 Networks" [RFC7428].  The security and privacy considerations
-   for IPv6 address generation are described in [RFC7721].
+   Autoconfiguration (SLAAC)"[RFC7217].  For stable IPv6 addresses
+   generated with SLAAC, nodes SHOULD implement and use [RFC7217] as the
+   default scheme as recommended in [RFC8064], and SHOULD NOT embed a
+   stable link-layer address in the interface identifier.  Specific
+   cases are described in appropriate "IPv6 over <link>" specifications,
+   such as "IPv6 over Ethernet" [RFC2464] and "Transmission of IPv6
+   Packets over ITU-T G.9959 Networks" [RFC7428].  The security and
+   privacy considerations for IPv6 address generation are described in
+   [RFC7721].
 
    Earlier versions of this document described a method of forming
    interface identifiers derived from IEEE MAC-layer addresses call
@@ -606,10 +610,6 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    The loopback address must not be used as the source address in IPv6
    packets that are sent outside of a single node.  An IPv6 packet with
    a destination address of loopback must never be sent outside of a
-   single node and must never be forwarded by an IPv6 router.  A packet
-   received on an interface with a destination address of loopback must
-   be dropped.
-
 
 
 
@@ -617,6 +617,10 @@ Hinden, et al.             Expires 27 May 2027                 [Page 11]
 
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
+
+   single node and must never be forwarded by an IPv6 router.  A packet
+   received on an interface with a destination address of loopback must
+   be dropped.
 
 2.4.4.  Global Unicast Addresses
 
@@ -662,10 +666,6 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    current IPv6 transition mechanisms no longer use these addresses.
    New or updated implementations are not required to support this
    address type.
-
-
-
-
 
 
 
@@ -1332,10 +1332,10 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
               RFC 7721, DOI 10.17487/RFC7721, March 2016,
               <https://www.rfc-editor.org/info/rfc7721>.
 
-
-
-
-
+   [RFC8064]  Gont, F., Cooper, A., Thaler, D., and W. Liu,
+              "Recommendation on Stable IPv6 Interface Identifiers",
+              RFC 8064, DOI 10.17487/RFC8064, February 2017,
+              <https://www.rfc-editor.org/info/rfc8064>.
 
 
 
@@ -1612,12 +1612,12 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
       addresses, and reference solutions that mitigate these issues such
       as RFC7721, RFC4941, RFC7217.
 
+   o  Incorporate the updates made by RFC8064 to recommend RFC7217 as
+      the default scheme for stable IPv6 addresses generated with SLAAC
+      and against embedding a stable link-layer address in an interface
+      identifier.
+
    o  Add note to Section 5 section acknowledging the authors of the
-      updating documents.
-
-   o  Updates to resolve the open Errata on RFC4291.  These are:
-
-      Errata ID: 3480: Corrects the definition of Interface-Local
 
 
 
@@ -1626,6 +1626,11 @@ Hinden, et al.             Expires 27 May 2027                 [Page 29]
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
 
+      updating documents.
+
+   o  Updates to resolve the open Errata on RFC4291.  These are:
+
+      Errata ID: 3480: Corrects the definition of Interface-Local
          multicast scope to also state that packets with interface-local
          scope received from another node must be discarded.
 
@@ -1670,11 +1675,6 @@ B.1.  Change History Since RFC4291
            includes a reference to RFC5942 "The IPv6 Subnet Model: The
            Relationship between Links and Subnet Prefixes".
 
-      09)  Removed short paragraph about manual configuration in
-           Section 2.4.1 that was added in the -08 version.
-
-      09)  Revised "Changes since RFC4291" Section to have a summary of
-
 
 
 Hinden, et al.             Expires 27 May 2027                 [Page 30]
@@ -1682,6 +1682,10 @@ Hinden, et al.             Expires 27 May 2027                 [Page 30]
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
 
+      09)  Removed short paragraph about manual configuration in
+           Section 2.4.1 that was added in the -08 version.
+
+      09)  Revised "Changes since RFC4291" Section to have a summary of
            changes since RFC4291 and a separate subsection with a change
            history of each Internet Draft.  This subsection will be
            removed when the RFC is published.
@@ -1726,10 +1730,6 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
       06)  Editorial changes.
 
       05)  Expanded Security Considerations Section to discuss privacy
-           issues related to using stable interface identifiers to
-           create IPv6 addresses, and reference solutions that mitigate
-           these issues such as RFC7721, RFC4941, RFC7217.
-
 
 
 
@@ -1737,6 +1737,10 @@ Hinden, et al.             Expires 27 May 2027                 [Page 31]
 
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
+
+           issues related to using stable interface identifiers to
+           create IPv6 addresses, and reference solutions that mitigate
+           these issues such as RFC7721, RFC4941, RFC7217.
 
       05)  Added instructions in IANA Considerations to update
            references in the IANA registries that currently point to
@@ -1783,16 +1787,16 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
       06)  Incorporate the updates made by RFC7371.  The changes were to
            the flag bits and their definitions in Section 2.6.
 
-      05)  Incorporate the updates made by RFC7346.  The change was to
-           add Realm-Local scope to the multicast scope table in
-           Section 2.6, and add the updating text to the same section.
-
 
 
 Hinden, et al.             Expires 27 May 2027                 [Page 32]
 
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
+
+      05)  Incorporate the updates made by RFC7346.  The change was to
+           add Realm-Local scope to the multicast scope table in
+           Section 2.6, and add the updating text to the same section.
 
       04)  Incorporate the updates made by RFC6052.  The change was to
            add a text in Section 2.3 that points to the IANA registries
@@ -1839,10 +1843,6 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
 
       02)  Update references to current versions.
 
-      02)  Editorial changes.
-
-      01)  Incorporate the updates made by RFC5952 regarding the text
-
 
 
 Hinden, et al.             Expires 27 May 2027                 [Page 33]
@@ -1850,6 +1850,9 @@ Hinden, et al.             Expires 27 May 2027                 [Page 33]
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
 
+      02)  Editorial changes.
+
+      01)  Incorporate the updates made by RFC5952 regarding the text
            format when outputting IPv6 addresses.  A new section was
            added for this and addresses shown in this document were
            changed to lower case.
@@ -1885,9 +1888,6 @@ Authors' Addresses
    Armidale Consulting
    Friday Harbor, WA 98250
    United States of America
-
-
-
 
 
 

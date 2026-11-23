@@ -16,6 +16,7 @@
 <!ENTITY rfc4007 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4007.xml">
 <!ENTITY rfc7217 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7217.xml">
 <!ENTITY rfc7721 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7721.xml">
+<!ENTITY rfc8064 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8064.xml">
 <!ENTITY rfc7421 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7421.xml">
 <!ENTITY rfc5952 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5952.xml">
 <!ENTITY rfc6164 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6164.xml">
@@ -728,6 +729,10 @@
    Autoconfiguration in IPv6" <xref target="RFC4941"/> or "A Method for
    Generating Semantically Opaque Interface Identifiers with IPv6
    Stateless Address Autoconfiguration (SLAAC)"<xref target="RFC7217"/>.
+   For stable IPv6 addresses generated with SLAAC, nodes SHOULD implement
+   and use <xref target="RFC7217"/> as the default scheme as
+   recommended in <xref target="RFC8064"/>, and SHOULD NOT
+   embed a stable link-layer address in the interface identifier.
    Specific cases are described in appropriate "IPv6 over &lt;link>"
    specifications, such as "IPv6 over Ethernet" <xref target="RFC2464"/>
    and "Transmission of IPv6 Packets over ITU-T G.9959 Networks" <xref
@@ -1498,6 +1503,7 @@
     &rfc6164;
     &rfc7217;
     &rfc7721;
+    &rfc8064;
     &rfc7421;
     &rfc5942;
 
@@ -1930,6 +1936,11 @@ implement longest-match-first on prefixes of any valid length.
      these issues such as RFC7721, RFC4941, RFC7217.
     </t>
 
+    <t hangText="o">Incorporate the updates made by RFC8064 to recommend
+    RFC7217 as the default scheme for stable IPv6 addresses generated
+    with SLAAC and against embedding a stable link-layer address in an
+    interface identifier.</t>
+
 <!--
 
 XXX    <t hangText="o">Added to <xref target="II"/> a reference to RFC7421
@@ -2198,5 +2209,3 @@ XXX    <t hangText="o">Changes references in <xref target="II"/> that describes
 
 
 <!-- Created by hand from RFC4291 by Bob Hinden, August 2015 -->
-
-

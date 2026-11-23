@@ -1563,7 +1563,7 @@ li > p:last-of-type:only-child {
    the IPv4 model in that all nodes automatically configure an address
    from the link-local prefix.
 
-   A host is by definition on-link with it's default router, and that
+   A host is by definition on-link with its default router, and that
    unicast addresses are not automatically associated with an on-link
    prefix.  See <span>[<a href="#RFC5942" class="cite xref">RFC5942</a>]</span> "The IPv6 Subnet Model: The
    Relationship between Links and Subnet Prefixes" for more details.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
@@ -2021,8 +2021,8 @@ li > p:last-of-type:only-child {
 </dd>
             <dd class="break"></dd>
 <dt id="section-2.2.3-3.57">7.</dt>
-            <dd style="margin-left: 1.5em" id="section-2.2.3-3.58">The text representation method describe in this section should also be
-  use for text Representation of IPv6 Address Prefixes.  For example<a href="#section-2.2.3-3.58" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-2.2.3-3.58">The text representation method described in this section should also be
+  used for text representation of IPv6 Address Prefixes.  For example<a href="#section-2.2.3-3.58" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-2.2.3-3.59"></dt>
@@ -2199,7 +2199,7 @@ li > p:last-of-type:only-child {
    Specific cases are described in appropriate "IPv6 over &lt;link&gt;"
    specifications, such as "IPv6 over Ethernet" <span>[<a href="#RFC2464" class="cite xref">RFC2464</a>]</span>
    and "Transmission of IPv6 Packets over ITU-T G.9959 Networks" <span>[<a href="#RFC7428" class="cite xref">RFC7428</a>]</span>.  The security and privacy considerations for IPv6
-   address generation is described in <span>[<a href="#RFC7721" class="cite xref">RFC7721</a>]</span>.<a href="#section-2.4.1-5" class="pilcrow">¶</a></p>
+   address generation are described in <span>[<a href="#RFC7721" class="cite xref">RFC7721</a>]</span>.<a href="#section-2.4.1-5" class="pilcrow">¶</a></p>
 <p id="section-2.4.1-6">Earlier versions of this document described a method of forming
    interface identifiers derived from IEEE MAC-layer addresses call
    Modified EUI-64 format. These are described in Appendix A and are no
@@ -2632,7 +2632,7 @@ li > p:last-of-type:only-child {
    multicast address whose scop field contains the reserved value F; if
    such a packet is sent or received, it must be treated the same as
    packets destined to a global (scop E) multicast address.<a href="#section-2.6-11" class="pilcrow">¶</a></p>
-<div id="Predefinded_MC">
+<div id="Predefined_MC">
 <section id="section-2.6.1">
           <h4 id="name-pre-defined-multicast-addre">
 <a href="#section-2.6.1" class="section-number selfRef">2.6.1. </a><a href="#name-pre-defined-multicast-addre" class="section-name selfRef">Pre-Defined Multicast Addresses</a>
@@ -2760,7 +2760,7 @@ li > p:last-of-type:only-child {
 </dl>
 </li>
           </ul>
-<p id="section-2.6.1-10">Solicited-Node multicast address are computed as a function of a
+<p id="section-2.6.1-10">Solicited-Node multicast addresses are computed as a function of a
    node's unicast and anycast addresses.  A Solicited-Node multicast
    address is formed by taking the low-order 24 bits of an address
    (unicast or anycast) and appending those bits to the prefix
@@ -2787,7 +2787,7 @@ li > p:last-of-type:only-child {
    the associated Solicited-Node multicast addresses for all unicast and
    anycast addresses that have been configured for the node's interfaces
    (manually or automatically).<a href="#section-2.6.1-15" class="pilcrow">¶</a></p>
-<p id="section-2.6.1-16">Additional defined multicast address can be found in the IANA IPv6
+<p id="section-2.6.1-16">Additional defined multicast addresses can be found in the IANA IPv6
    Multicast Address Allocation registry <span>[<a href="#IANA-MC" class="cite xref">IANA-MC</a>]</span><a href="#section-2.6.1-16" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2817,7 +2817,7 @@ li > p:last-of-type:only-child {
 </dd>
               <dd class="break"></dd>
 <dt id="section-2.7-2.1.1.7">o</dt>
-              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.8">The All-Nodes multicast addresses defined in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#section-2.7-2.1.1.8" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-2.7-2.1.1.8">The All-Nodes multicast addresses defined in <a href="#Predefined_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#section-2.7-2.1.1.8" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="section-2.7-2.1.1.9">o</dt>
@@ -2850,7 +2850,7 @@ li > p:last-of-type:only-child {
 </dd>
               <dd class="break"></dd>
 <dt id="section-2.7-4.1.1.5">o</dt>
-              <dd style="margin-left: 1.5em" id="section-2.7-4.1.1.6">The All-Routers multicast addresses defined in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#section-2.7-4.1.1.6" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-2.7-4.1.1.6">The All-Routers multicast addresses defined in <a href="#Predefined_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#section-2.7-4.1.1.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2941,7 +2941,7 @@ li > p:last-of-type:only-child {
 <p id="section-4-1">IPv6 addressing documents do not have any direct impact on Internet
    infrastructure security.  Authentication of IPv6 packets is defined
    in <span>[<a href="#RFC4302" class="cite xref">RFC4302</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">One area relavant to IPv6 addressing is privacy.  IPv6 addresses
+<p id="section-4-2">One area relevant to IPv6 addressing is privacy.  IPv6 addresses
    can be created using interface identifiers constructed with unique
    stable tokens.  The addresses created in this manner can be used to
    track the movement of devices across the Internet.  Since earlier
@@ -2969,7 +2969,7 @@ li > p:last-of-type:only-child {
     Dimitry Haskin,
     Erik Nordmark,
     Greg Minshall,
-    James Woodyatt.
+    James Woodyatt,
     Jim Bound,
     Jun-ichiro Itojun Hagino,
     Larry Masinter,
@@ -3065,7 +3065,7 @@ li > p:last-of-type:only-child {
 <dd class="break"></dd>
 <dt id="IANA-SP">[IANA-SP]</dt>
         <dd>
-<span class="refTitle">"IANA IPv6 Special-Purpose Address Registry"</span>, <span>&lt;<a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml">https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml</a>&gt;</span>. </dd>
+<span class="refTitle">"IPv6 Special-Purpose Address Space Registry"</span>, <span>&lt;<a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml">https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2464">[RFC2464]</dt>
         <dd>
@@ -3316,7 +3316,7 @@ li > p:last-of-type:only-child {
           <dt id="appendix-A.1-25.1">Note:</dt>
           <dd style="margin-left: 3.5em" id="appendix-A.1-25.2">
             <span>[<a href="#EUI64" class="cite xref">EUI64</a>]</span> actually defines 0xFF and
-    0xFF as the bits to be inserted to create an IEEE EUI-64 identifier
+    0xFE as the bits to be inserted to create an IEEE EUI-64 identifier
     from an IEEE MAC- 48 identifier.  The 0xFF and 0xFE values are used
     when starting with an IEEE EUI-48 identifier.  The incorrect value
     was used in earlier versions of the specification due to a
@@ -3355,7 +3355,7 @@ li > p:last-of-type:only-child {
         <dd class="break"></dd>
 <dt id="appendix-B-2.3">o</dt>
         <dd style="margin-left: 1.5em" id="appendix-B-2.4">Added text to the last paragraph in <a href="#Model" class="auto internal xref">Section 2.1</a> to clarify the differences on how subnets are
-    hangled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
+    handled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
     Subnet Model: The Relationship between Links and Subnet Prefixes".<a href="#appendix-B-2.4" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
@@ -3412,7 +3412,7 @@ li > p:last-of-type:only-child {
         <dd class="break"></dd>
 <dt id="appendix-B-2.19">o</dt>
         <dd style="margin-left: 1.5em" id="appendix-B-2.20">Added a reference to the IANA Multicast
-     address registry in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#appendix-B-2.20" class="pilcrow">¶</a>
+     address registry in <a href="#Predefined_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#appendix-B-2.20" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 <dt id="appendix-B-2.21">o</dt>
@@ -3425,7 +3425,7 @@ li > p:last-of-type:only-child {
         <dd style="margin-left: 1.5em" id="appendix-B-2.24">Expanded Security Considerations Section to
      discuss privacy issues related to using stable interface identifiers
      to create IPv6 addresses, and reference solutions that mitigate
-     these issues such as RFC7721, RFC4941, RFC7271.<a href="#appendix-B-2.24" class="pilcrow">¶</a>
+     these issues such as RFC7721, RFC4941, RFC7217.<a href="#appendix-B-2.24" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd><dt id="appendix-B-2.25">o</dt>
         <dd style="margin-left: 1.5em" id="appendix-B-2.26">Add note to <a href="#Ack" class="auto internal xref">Section 5</a> section acknowledging the
@@ -3509,7 +3509,7 @@ li > p:last-of-type:only-child {
             <span class="break"></span><dl class="dlParallel" id="appendix-B.1-4.1.1">
               <dt id="appendix-B.1-4.1.1.1">09)</dt>
               <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.2">Added text to the last paragraph in <a href="#Model" class="auto internal xref">Section 2.1</a> to clarify the differences on how subnets are
-    hangled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
+    handled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
     Subnet Model: The Relationship between Links and Subnet Prefixes".<a href="#appendix-B.1-4.1.1.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
@@ -3564,8 +3564,8 @@ li > p:last-of-type:only-child {
 <dt id="appendix-B.1-4.1.1.19">07)</dt>
               <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.20">Based on review by Brian Haberman added reference
     to RFC5952 in <a href="#Output" class="auto internal xref">Section 2.2.3</a>, corrected case errors in
-    <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>, and added a reference to the IANA
-    Multicast address registry in <a href="#Predefinded_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#appendix-B.1-4.1.1.20" class="pilcrow">¶</a>
+    <a href="#Predefined_MC" class="auto internal xref">Section 2.6.1</a>, and added a reference to the IANA
+    Multicast address registry in <a href="#Predefined_MC" class="auto internal xref">Section 2.6.1</a>.<a href="#appendix-B.1-4.1.1.20" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="appendix-B.1-4.1.1.21">07)</dt>
@@ -3585,7 +3585,7 @@ li > p:last-of-type:only-child {
               <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.28">Expanded Security Considerations Section to
      discuss privacy issues related to using stable interface identifiers
      to create IPv6 addresses, and reference solutions that mitigate
-     these issues such as RFC7721, RFC4941, RFC7271.<a href="#appendix-B.1-4.1.1.28" class="pilcrow">¶</a>
+     these issues such as RFC7721, RFC4941, RFC7217.<a href="#appendix-B.1-4.1.1.28" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="appendix-B.1-4.1.1.29">05)</dt>
@@ -3627,7 +3627,7 @@ li > p:last-of-type:only-child {
               <dd class="break"></dd>
 <dt id="appendix-B.1-4.1.1.43">03)</dt>
               <dd style="margin-left: 2.5em" id="appendix-B.1-4.1.1.44">Changes references in <a href="#II" class="auto internal xref">Section 2.4.1</a> that describes
-    the details of forming IIDs to RFC7271 and RFC7721.<a href="#appendix-B.1-4.1.1.44" class="pilcrow">¶</a>
+    the details of forming IIDs to RFC7217 and RFC7721.<a href="#appendix-B.1-4.1.1.44" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="appendix-B.1-4.1.1.45">02)</dt>

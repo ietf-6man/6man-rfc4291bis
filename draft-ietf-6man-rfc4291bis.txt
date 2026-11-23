@@ -201,7 +201,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    to the same link.  The relationship between links and IPv6 subnet
    prefixes differs from the IPv4 model in that all nodes automatically
    configure an address from the link-local prefix.  A host is by
-   definition on-link with it's default router, and that unicast
+   definition on-link with its default router, and that unicast
    addresses are not automatically associated with an on-link prefix.
    See [RFC5942] "The IPv6 Subnet Model: The Relationship between Links
    and Subnet Prefixes" for more details.
@@ -418,9 +418,9 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
 
       is not correct.
 
-   7.  The text representation method describe in this section should
-      also be use for text Representation of IPv6 Address Prefixes.  For
-      example
+   7.  The text representation method described in this section should
+      also be used for text representation of IPv6 Address Prefixes.
+      For example
 
       2001:0db8:0000:cd30:0000:0000:0000:0000/60
 
@@ -574,7 +574,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    appropriate "IPv6 over <link>" specifications, such as "IPv6 over
    Ethernet" [RFC2464] and "Transmission of IPv6 Packets over ITU-T
    G.9959 Networks" [RFC7428].  The security and privacy considerations
-   for IPv6 address generation is described in [RFC7721].
+   for IPv6 address generation are described in [RFC7721].
 
    Earlier versions of this document described a method of forming
    interface identifiers derived from IEEE MAC-layer addresses call
@@ -1010,7 +1010,7 @@ Hinden & Deering           Expires 27 May 2027                 [Page 18]
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
 
-   Solicited-Node multicast address are computed as a function of a
+   Solicited-Node multicast addresses are computed as a function of a
    node's unicast and anycast addresses.  A Solicited-Node multicast
    address is formed by taking the low-order 24 bits of an address
    (unicast or anycast) and appending those bits to the prefix
@@ -1035,7 +1035,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    anycast addresses that have been configured for the node's interfaces
    (manually or automatically).
 
-   Additional defined multicast address can be found in the IANA IPv6
+   Additional defined multicast addresses can be found in the IANA IPv6
    Multicast Address Allocation registry [IANA-MC]
 
 2.7.  A Node's Required Addresses
@@ -1122,7 +1122,7 @@ Hinden & Deering           Expires 27 May 2027                 [Page 20]
 Internet-Draft        IPv6 Addressing Architecture         November 2026
 
 
-   One area relavant to IPv6 addressing is privacy.  IPv6 addresses can
+   One area relevant to IPv6 addressing is privacy.  IPv6 addresses can
    be created using interface identifiers constructed with unique stable
    tokens.  The addresses created in this manner can be used to track
    the movement of devices across the Internet.  Since earlier versions
@@ -1139,7 +1139,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    The authors would like to acknowledge the contributions of Bill
    Simpson, Bob Fink, Bob Gilligan, Brian Carpenter, Christian Huitema,
    Deborah Estrin, Dimitry Haskin, Erik Nordmark, Greg Minshall, James
-   Woodyatt.  Jim Bound, Jun-ichiro Itojun Hagino, Larry Masinter,
+   Woodyatt, Jim Bound, Jun-ichiro Itojun Hagino, Larry Masinter,
    Mahmood Ali, Markku Savela, Matt Crawford, Paul Francis, Peter Ford,
    Roger Fajman, Scott Bradner, Sue Thomson, Suresh Krishnan, Tatuya
    Jinmei, Thomas Narten, Tom Harsch, Tony Li, and Yakov Rekhter.
@@ -1216,7 +1216,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
 
    [IANA-PR]  "Protocol Registries", <https://www.iana.org/protocols>.
 
-   [IANA-SP]  "IANA IPv6 Special-Purpose Address Registry",
+   [IANA-SP]  "IPv6 Special-Purpose Address Space Registry",
               <https://www.iana.org/assignments/iana-ipv6-special-
               registry/iana-ipv6-special-registry.xhtml>.
 
@@ -1528,7 +1528,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    recommended that a collision detection algorithm be implemented as
    part of any automatic algorithm.
 
-   Note:  [EUI64] actually defines 0xFF and 0xFF as the bits to be
+   Note:  [EUI64] actually defines 0xFF and 0xFE as the bits to be
           inserted to create an IEEE EUI-64 identifier from an IEEE MAC-
           48 identifier.  The 0xFF and 0xFE values are used when
           starting with an IEEE EUI-48 identifier.  The incorrect value
@@ -1554,7 +1554,7 @@ Appendix B.  CHANGES SINCE RFC 4291
       of a node.
 
    o  Added text to the last paragraph in Section 2.1 to clarify the
-      differences on how subnets are hangled in IPv4 and IPv6, includes
+      differences on how subnets are handled in IPv4 and IPv6, includes
       a reference to RFC5942 "The IPv6 Subnet Model: The Relationship
       between Links and Subnet Prefixes".
 
@@ -1610,7 +1610,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
    o  Expanded Security Considerations Section to discuss privacy issues
       related to using stable interface identifiers to create IPv6
       addresses, and reference solutions that mitigate these issues such
-      as RFC7721, RFC4941, RFC7271.
+      as RFC7721, RFC4941, RFC7217.
 
    o  Add note to Section 5 section acknowledging the authors of the
       updating documents.
@@ -1666,7 +1666,7 @@ B.1.  Change History Since RFC4291
    Working Group Internet Drafts
 
       09)  Added text to the last paragraph in Section 2.1 to clarify
-           the differences on how subnets are hangled in IPv4 and IPv6,
+           the differences on how subnets are handled in IPv4 and IPv6,
            includes a reference to RFC5942 "The IPv6 Subnet Model: The
            Relationship between Links and Subnet Prefixes".
 
@@ -1728,7 +1728,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
       05)  Expanded Security Considerations Section to discuss privacy
            issues related to using stable interface identifiers to
            create IPv6 addresses, and reference solutions that mitigate
-           these issues such as RFC7721, RFC4941, RFC7271.
+           these issues such as RFC7721, RFC4941, RFC7217.
 
 
 
@@ -1762,7 +1762,7 @@ Internet-Draft        IPv6 Addressing Architecture         November 2026
       04)  Editorial changes.
 
       03)  Changes references in Section 2.4.1 that describes the
-           details of forming IIDs to RFC7271 and RFC7721.
+           details of forming IIDs to RFC7217 and RFC7721.
 
       02)  Remove changes made by RFC7371 because there isn't any known
            implementation experience.

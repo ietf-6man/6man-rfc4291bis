@@ -87,6 +87,25 @@
       </address>
 </author>
 
+<author fullname="Dave Thaler" initials="D"
+            surname="Thaler">
+      <organization>Armidale Consulting</organization>
+      <address>
+        <postal>
+          <street></street>
+          <!-- Reorder these if your country does things differently -->
+          <city>Friday Harbor</city>
+          <region>WA</region>
+          <code>98250</code>
+          <country>USA</country>
+        </postal>
+        <phone></phone>
+	<facsimile></facsimile>
+        <email></email>
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+</author>
+
 <date day="" month="" year="" />
 
 <abstract>

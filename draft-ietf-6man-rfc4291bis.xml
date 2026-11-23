@@ -200,7 +200,7 @@
    the IPv4 model in that all nodes automatically configure an address
    from the link-local prefix.
 
-   A host is by definition on-link with it's default router, and that
+   A host is by definition on-link with its default router, and that
    unicast addresses are not automatically associated with an on-link
    prefix.  See <xref target="RFC5942"/> "The IPv6 Subnet Model: The
    Relationship between Links and Subnet Prefixes" for more details.</t>
@@ -460,8 +460,8 @@
   
   <t>is not correct.</t>
 
-  <t hangText="7.">The text representation method describe in this section should also be
-  use for text Representation of IPv6 Address Prefixes.  For example</t>
+  <t hangText="7.">The text representation method described in this section should also be
+  used for text representation of IPv6 Address Prefixes.  For example</t>
 
   <t><list>
    <t>2001:0db8:0000:cd30:0000:0000:0000:0000/60</t>
@@ -1159,7 +1159,7 @@
    such a packet is sent or received, it must be treated the same as
    packets destined to a global (scop E) multicast address.</t>
 
-  <section title="Pre-Defined Multicast Addresses" anchor="Predefinded_MC">
+  <section title="Pre-Defined Multicast Addresses" anchor="Predefined_MC">
 
    <t>The following well-known multicast addresses are pre-defined.  The
    group IDs defined in this section are defined for explicit scope
@@ -1225,7 +1225,7 @@
    </list></t>
    </list></t>
 
-   <t>Solicited-Node multicast address are computed as a function of a
+   <t>Solicited-Node multicast addresses are computed as a function of a
    node's unicast and anycast addresses.  A Solicited-Node multicast
    address is formed by taking the low-order 24 bits of an address
    (unicast or anycast) and appending those bits to the prefix
@@ -1254,7 +1254,7 @@
    anycast addresses that have been configured for the node's interfaces
    (manually or automatically).</t>
 
-   <t>Additional defined multicast address can be found in the IANA IPv6
+   <t>Additional defined multicast addresses can be found in the IANA IPv6
    Multicast Address Allocation registry <xref target="IANA-MC"/></t>
 
    
@@ -1277,7 +1277,7 @@
    <t  hangText="o">The loopback address.</t>
 
    <t hangText="o">The All-Nodes multicast addresses defined in <xref
-   target="Predefinded_MC"/>.</t>
+   target="Predefined_MC"/>.</t>
 
    <t  hangText="o">The Solicited-Node multicast address for each of its unicast and
    anycast addresses.</t>
@@ -1302,7 +1302,7 @@
    configured.</t>
 
    <t hangText="o">The All-Routers multicast addresses defined in <xref
-   target="Predefinded_MC"/>.</t>
+   target="Predefined_MC"/>.</t>
 
    </list></t>
    </list></t>
@@ -1390,7 +1390,7 @@
    in <xref target="RFC4302"/>.</t>
 
 
-   <t>One area relavant to IPv6 addressing is privacy.  IPv6 addresses
+   <t>One area relevant to IPv6 addressing is privacy.  IPv6 addresses
    can be created using interface identifiers constructed with unique
    stable tokens.  The addresses created in this manner can be used to
    track the movement of devices across the Internet.  Since earlier
@@ -1418,7 +1418,7 @@
     Dimitry Haskin,
     Erik Nordmark,
     Greg Minshall,
-    James Woodyatt.
+    James Woodyatt,
     Jim Bound,
     Jun-ichiro Itojun Hagino,
     Larry Masinter,
@@ -1544,7 +1544,7 @@ implement longest-match-first on prefixes of any valid length.
     <reference anchor="IANA-SP"
        target="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml">
      <front>
-     <title>IANA IPv6 Special-Purpose Address Registry</title>
+     <title>IPv6 Special-Purpose Address Space Registry</title>
      <author/>
      <date/>
     </front>
@@ -1822,7 +1822,7 @@ implement longest-match-first on prefixes of any valid length.
 
     <t><list hangIndent="7" style="hanging">
     <t hangText="Note:"><xref target="EUI64"/> actually defines 0xFF and
-    0xFF as the bits to be inserted to create an IEEE EUI-64 identifier
+    0xFE as the bits to be inserted to create an IEEE EUI-64 identifier
     from an IEEE MAC- 48 identifier.  The 0xFF and 0xFE values are used
     when starting with an IEEE EUI-48 identifier.  The incorrect value
     was used in earlier versions of the specification due to a
@@ -1855,7 +1855,7 @@ implement longest-match-first on prefixes of any valid length.
 
     <t hangText="o">Added text to the last paragraph in <xref
     target="Model"/> to clarify the differences on how subnets are
-    hangled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
+    handled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
     Subnet Model: The Relationship between Links and Subnet Prefixes".
     </t>
 
@@ -1898,7 +1898,7 @@ implement longest-match-first on prefixes of any valid length.
     section.</t>
 
      <t hangText="o">Added a reference to the IANA Multicast
-     address registry in <xref target="Predefinded_MC"/>.</t>
+     address registry in <xref target="Predefined_MC"/>.</t>
 
     <t hangText="o">Added instructions in IANA Considerations to update
     references in the IANA registries that currently point to RFC4291 to
@@ -1908,7 +1908,7 @@ implement longest-match-first on prefixes of any valid length.
     <t hangText="o">Expanded Security Considerations Section to
      discuss privacy issues related to using stable interface identifiers
      to create IPv6 addresses, and reference solutions that mitigate
-     these issues such as RFC7721, RFC4941, RFC7271.
+     these issues such as RFC7721, RFC4941, RFC7217.
     </t>
 
 <!--
@@ -1981,7 +1981,7 @@ XXX    <t hangText="o">Changes references in <xref target="II"/> that describes
 
     <t hangText="09)">Added text to the last paragraph in <xref
     target="Model"/> to clarify the differences on how subnets are
-    hangled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
+    handled in IPv4 and IPv6, includes a reference to RFC5942 "The IPv6
     Subnet Model: The Relationship between Links and Subnet Prefixes".
     </t>
 
@@ -2021,8 +2021,8 @@ XXX    <t hangText="o">Changes references in <xref target="II"/> that describes
 
     <t hangText="07)">Based on review by Brian Haberman added reference
     to RFC5952 in <xref target="Output"/>, corrected case errors in
-    <xref target="Predefinded_MC"/>, and added a reference to the IANA
-    Multicast address registry in <xref target="Predefinded_MC"/>.</t>
+    <xref target="Predefined_MC"/>, and added a reference to the IANA
+    Multicast address registry in <xref target="Predefined_MC"/>.</t>
 
     <t hangText="07)">Corrected errors in <xref target="Output"/> where
     the examples in 7. and 8. were reversed.</t>
@@ -2034,7 +2034,7 @@ XXX    <t hangText="o">Changes references in <xref target="II"/> that describes
      <t hangText="05)">Expanded Security Considerations Section to
      discuss privacy issues related to using stable interface identifiers
      to create IPv6 addresses, and reference solutions that mitigate
-     these issues such as RFC7721, RFC4941, RFC7271.
+     these issues such as RFC7721, RFC4941, RFC7217.
     </t>
 
     <t hangText="05)">Added instructions in IANA Considerations to update
@@ -2063,7 +2063,7 @@ XXX    <t hangText="o">Changes references in <xref target="II"/> that describes
     <t hangText="04)">Editorial changes.</t>
 
     <t hangText="03)">Changes references in <xref target="II"/> that describes
-    the details of forming IIDs to RFC7271 and RFC7721.</t>
+    the details of forming IIDs to RFC7217 and RFC7721.</t>
 
     <t hangText="02)">Remove changes made by RFC7371 because there isn't
     any known implementation experience.</t>
